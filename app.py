@@ -14,6 +14,7 @@ from worker import conn
 from googleapiclient import discovery
 from googleapiclient.http import BatchHttpRequest
 from oauth2client import client
+
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'memcached'
 app.config['SECRET_KEY'] = 'super secret key'
@@ -24,98 +25,18 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
 
 q = Queue(connection=conn)
+from contacts import get_contacts
+
 from models import *
 
-def get_contacts(pagenr):
-    print "test"
-    credentials = client.OAuth2Credentials.from_json(session['credentials'])
+
+
+@app.route('/')
+def index():
     if 'seen' not in session:
         session['seen'] = []
     if 'mails' not in session:
         session['mails'] = []
-# Authorize the httplib2.Http object with our credentials
-
-    http = credentials.authorize(httplib2.Http())
-
-# Build the Gmail service from discovery
-
-    gmail_service = discovery.build('gmail', 'v1', http=http)
-
-# Retrieve a page of threads
-
-    message_ids = gmail_service.users().messages().list(userId='me',
-                maxResults=20, labelIds='INBOX').execute()
-
-# Print ID for each thread
-# if threads['threads']:
-#  for thread in threads['threads']:
-#    print 'Thread ID: %s' % (thread['id'])
-
-    def contactscallbackfunc(result, results, moreresults):
-
-       # in old Python versions:
-       # if seen.has_key(marker)
-       # but in new ones:
-
-        if 'UNREAD' in results['labelIds']:
-            Unread = 'true'
-        else:
-            Unread = 'false'
-        for header in results['payload']['headers']:
-            if header['name'] == 'Date':
-                Date = header['value']
-            if header['name'] == 'From':
-                From = header['value']
-                address = From.split()[-1]
-                address = re.sub(r'[<>]', '', address)
-                Address = address.strip()
-                Name = From.rsplit(' ', 1)[0]
-                
-                
-
-        if From not in session['seen']:
-            
-            Contact = {
-                'messageId': results['id'],
-                'contactNr': len(session['seen']),
-                'date': Date,
-                'name': Name,
-                'address': Address,
-                'snippet': results['snippet'],
-                'unread': Unread,
-                }
-            session['mails'].append(Contact)
-            session['seen'].append(From)
-   
-    batchContacts = BatchHttpRequest(callback=contactscallbackfunc)
-    for msg_id in message_ids['messages']:
-        batchContacts.add(gmail_service.users().messages().get(userId='me',
-                  id=msg_id['id'], format='metadata',
-                  metadataHeaders=['from', 'date']))
-    batchContacts.execute()
-    print "test"
-
-
-    #def mailscallbackfunc(result, results, moreresults):
-    #    if 'UNREAD' in results['labelIds']:
-    #        Unread = 'true'
-    #   else:
-    #        Unread = 'false'
-    #
-    #batchMails = BatchHttpRequest(callback=mailscallbackfunc)
-    #for contact in session['seen']:
-	#	batchContacts.add(gmail_service.users().messages().get(userId='me',
-    #              id=msg_id['id'], format='metadata',
-    #              metadataHeaders=['from', 'date']))
-    #batchMails.execute()	
-
-    #js = json.dumps(session['mails'])
-    #resp = Response(js, status=200, mimetype='application/json')
-    #return resp
-    
-
-@app.route('/')
-def index():
     if 'credentials' not in session:
         return redirect(url_for('oauth2callback'))
     credentials = client.OAuth2Credentials.from_json(session['credentials'])
@@ -143,9 +64,11 @@ redirect_uri=url_for('oauth2callback',_external=True))
 
 @app.route('/v1/gmail/contacts/<int:pagenr>')
 def contacts(pagenr):
+
     results = {}
-    job = q.enqueue_call(func=get_contacts, args=(pagenr,), result_ttl=5000)
+    job = q.enqueue_call(func=get_contacts, args=(pagenr,session['seen'],session['credentials']), result_ttl=5000)
     return job.get_id()
+    
     #return results
 	#return render_template('index.html', results=results)
 	
@@ -233,7 +156,7 @@ def messages(msgnr):
 
     js = json.dumps(session['messages'])
     resp = Response(js, status=200, mimetype='application/json')
-    return resp
+    return job.get_id()
 
 @app.route('/v1/gmail/message/<msg_id>')
 def message(msg_id):
@@ -262,7 +185,11 @@ def get_results(job_key):
     job = Job.fetch(job_key, connection=conn)
 
     if job.is_finished:
-        return str(job.result), 200
+        session['seen'] = session['seen'] + job.result['seen']
+        
+        js = json.dumps(session['seen'])
+        resp = Response(js, status=200, mimetype='application/json')
+        return resp
     else:
         return "Nay!", 202
 
