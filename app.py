@@ -26,7 +26,7 @@ app.config['SECRET_KEY'] = 'super secret key'
 app.debug = True
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
-#app.config.from_object(os.environ['APP_SETTINGS'])
+app.config.from_object(os.environ['APP_SETTINGS'])
 #db = SQLAlchemy(app)
 
 q = Queue(connection=conn)
