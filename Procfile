@@ -1,1 +1,1 @@
-web: sh herokus.sh
+web: sh heroku.sh
