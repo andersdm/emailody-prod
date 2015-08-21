@@ -12,13 +12,13 @@ angular.module('myApp.view1', ['ngRoute'])
 .controller('View1Ctrl', function ($scope, $http, LxNotificationService, LxDialogService) {
     // Load all registered users
 
-    $http.get('/v1/gmail/contacts').
+    $http.get('/v1/gmail/contacts/1').
         success(function(data) {
-            $scope.contacts = data;
+            $scope.contacts = data['contacts'];
         });
     
-    $scope.getMessages = function (msgnr) {
-		$http.get('/v1/gmail/messages/'+msgnr).
+    $scope.getMessages = function (jobId) {
+		$http.get('/v1/gmail/messages/results/'+jobId).
         success(function(data) {
             $scope.messages = data;
         });

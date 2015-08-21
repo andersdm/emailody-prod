@@ -47,7 +47,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
                 </div>
                 <div  class="stretch pr+ pl pt+" lx-scrollbar>
                 <ul class="list ">
-                    <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="currentContact.name = contact.name; currentContact.address = contact.address; getMessages(contact.contactNr)">
+                    <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="currentContact.name = contact.name; currentContact.address = contact.address; getMessages(contact.jobId)">
                         <div class="list-row__primary">
                             <img gravatar-src="contact.address;" class="img-round img-round-l">
                             <!--<i class="icon icon--l icon--grey bgc-grey-400 icon--circled mdi mdi-account" ng-hide="contact.gravatarHash" style="width:48px; height:48px; font-size:32px; padding-top:5px; color:#F8F8F8"></i>
