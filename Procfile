@@ -1,2 +1,1 @@
-web: gunicorn app:app
-
+web: sh herokus.sh
