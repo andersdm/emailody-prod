@@ -4,7 +4,7 @@ from googleapiclient.http import BatchHttpRequest
 from oauth2client import client
 from rq import Queue
 from rq.job import Job
-from worker import conn
+#from worker import conn
 
 import httplib2
 import re
