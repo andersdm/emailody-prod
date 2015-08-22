@@ -1,1 +1,2 @@
-web: sh heroku.sh
+web: gunicorn app:app --log-file=-
+worker: python worker.py
