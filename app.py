@@ -200,7 +200,7 @@ def get_results(job_key):
         return "Nay!", 202
 
     
-if __name__ == '__main__':
-    app.config['SECRET_KEY'] = 'super secret key'
-    app.debug = True
-    app.run()
+#if __name__ == '__main__':
+#    app.config['SECRET_KEY'] = 'super secret key'
+#    app.debug = True
+#    app.run()
