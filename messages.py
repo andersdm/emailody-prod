@@ -13,7 +13,7 @@ import json
 # Find the stack on which we want to store the database connection.
 # Starting with Flask 0.9, the _app_ctx_stack is the correct one,
 # before that we need to use the _request_ctx_stack.
-q = Queue(connection=conn)
+#q = Queue(connection=conn)
 
 def get_messages(pagenr,contact,credentials):
     messages=[]
