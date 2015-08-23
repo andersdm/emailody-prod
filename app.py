@@ -18,7 +18,7 @@ from googleapiclient.http import BatchHttpRequest
 from oauth2client import client
 from flask_kvsession import KVSessionExtension
 from simplekv.memory.redisstore import RedisStore
-store = RedisStore(redis.StrictRedis())
+store = RedisStore(conn)
 app = Flask(__name__)
 KVSessionExtension(store, app)
 #app.config['SESSION_TYPE'] = 'memcached'
