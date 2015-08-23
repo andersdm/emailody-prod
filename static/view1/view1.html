@@ -60,9 +60,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
                             <span class="display-block tc-light-blue-200 fs-body-1" style="line-height:1.2rem; font-size:0.694rem !important">{{contact.date}}</span>
                         </div>
 
-                        <div class="list-row__secondary">
+                        <!--<div class="list-row__secondary">
                             <i class="icon icon--xs icon--grey icon--flat mdi mdi-information"></i>
-                        </div>
+                        </div>-->
                     </li>
 
                 </ul>
@@ -189,7 +189,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
 
-                <div class="dialog__content fs-body-1 ml p++" ng-bind-html="emailbody">
+                <div class="dialog__content fs-body-1 ml p++">
+                    <p ng-bind-html="emailbody"></p>
 
 
                     
