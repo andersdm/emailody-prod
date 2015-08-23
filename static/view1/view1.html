@@ -112,14 +112,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
                         </div>
 
-                        <div ng-show="message.sent" class="list-row__primary" ng-click="currentMessage.subject=message.subject;  currentMessage.date=message.date;  currentMessage.sent=message.sent; modal('readMail'); opendDialog('test')">
+                        <div ng-show="message.sent" class="list-row__primary" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject;  currentMessage.date=message.date;  currentMessage.sent=message.sent; modal('readMail'); opendDialog('test')">
 
 
                             <i class="icon icon--m icon--grey bgc-grey-300 icon--circled mdi mdi-send"></i>
 
                         </div>
 
-                        <div class="list-row__content" ng-click="currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; modal('readMail'); opendDialog('test')">
+                        <div class="list-row__content" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; modal('readMail'); opendDialog('test')">
                             <span class="display-block" style="font-size:0.833rem">{{message.subject}} <span class="tc-light-blue-200" style="font-size:0.694rem"> 9:52 PM.</span> </span>
                             <span class="display-block fs-body-1 tc-black-2">{{message.snippet}}</span>
 
@@ -189,17 +189,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
 
-                <div class="dialog__content fs-body-1 ml p++">
+                <div class="dialog__content fs-body-1 ml p++" ng-bind-html="emailbody">
 
 
-                    Kære Gruppeledere og Divisionschefer
-                    <br>
-                    <br> I inviteres hermed til Spejdernes Workshop i september. Se den vedhæftede invitation.
-                    <br>
-                    <br> Med venlig hilsen
-                    <br>
-                    <br> Bie Andersen
-                    <br> Projektleder Arsenalvej 10 1436 København K Tlf. 23 24 67 28 Mail: ba@dds.dk skype: bie.andersen
+                    
                 </div>
                 <div class="divider divider--dark"></div>
                 <div class="toolbar valign halign">

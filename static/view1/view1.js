@@ -9,7 +9,7 @@ angular.module('myApp.view1', ['ngRoute'])
     });
 }])
 
-.controller('View1Ctrl', function ($scope, $http, LxNotificationService, LxDialogService) {
+.controller('View1Ctrl', function ($scope, $http, $sce, LxNotificationService, LxDialogService) {
     // Load all registered users
 
     $http.get('/v1/gmail/contacts/1').
@@ -45,6 +45,15 @@ angular.module('myApp.view1', ['ngRoute'])
 
     $scope.urldecode = function (url) {
         return decodeURIComponent(url)
+    }
+
+    $scope.getMessage = function (msgId) {
+        $http.get('/v1/gmail/message/'+msgId).
+        success(function(data) {
+            $scope.emailbody = data;
+            $sce.trustAsHtml($scope.emailbody);
+
+        });
     }
 
     /*$scope.chats = [
