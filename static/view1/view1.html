@@ -18,10 +18,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 <div class="divider divider--dark"></div>
 
 
-<div class="stretch" flex-container="row">
+<div class="" flex-container="row">
 
 
-    <div flex-item="3" flex-item-order="2" class="stretch" style="box-shadow:0 3px 3px rgba(0, 0, 0, 0.3); position:relative; z-index:1; background-color:#F8F8F8">
+    <div flex-item="3" flex-item-order="1" style="box-shadow:0 3px 3px rgba(0, 0, 0, 0.3); position:relative; z-index:1; background-color:#F8F8F8">
         
 
 
@@ -37,7 +37,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
                     <button class="btn btn--s btn--blue btn--icon mr" lx-ripple>
-                        <i class="icon icon--s icon--grey tc-light-blue-200 icon--flat mdi mdi-pen" ng-click="modal('writeMail');  opendDialog('test');"></i>
+                        <i class="icon icon--s icon--grey tc-light-blue-200 icon--flat mdi mdi-pen" ng-click="changeRight('writeMail');"></i>
                     </button>
                     <button class="btn btn--s btn--blue btn--icon mr " lx-ripple>
                         <i class="icon icon--s icon--grey tc-light-blue-200 icon--flat mdi mdi-magnify"></i>
@@ -45,9 +45,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
                 </div>
-                <div  class="stretch pr+ pl pt+" lx-scrollbar>
-                <ul class="list ">
-                    <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="currentContact.name = contact.name; currentContact.address = contact.address; getMessages(contact.jobId)">
+                <div  class="pr+ pl pt+ " lx-scrollbar style="max-height: {{scrollbarHeight}}">
+                <ul class="list">
+                    <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="currentContact.name = contact.name; currentContact.address = contact.address; getMessages(contact.jobId); changeRight('listMails')">
                         <div class="list-row__primary">
                             <img gravatar-src="contact.address;" class="img-round img-round-l">
                             <!--<i class="icon icon--l icon--grey bgc-grey-400 icon--circled mdi mdi-account" ng-hide="contact.gravatarHash" style="width:48px; height:48px; font-size:32px; padding-top:5px; color:#F8F8F8"></i>
@@ -78,8 +78,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
             </div>
         </div>
-    <!--</div>-->
-    <div class="stretch" flex-item="" flex-item-order="2">
+
+    <div class="" flex-item="" flex-item-order="2">
+		<div ng-switch="rightShow">
+            <div ng-switch-when="listMails">
                 <div class="toolbar" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.12), 0 2px 0px 0 rgba(0, 0, 0, 0.0);">
 					
                     <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" ng-hide="currentContact.name">Choose a contact to the left</span>
@@ -102,24 +104,24 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
                 </div>
 
-		<div class="stretch pr+ pl+ pt+" lx-scrollbar style="padding-right:10px; padding-top:15px; padding-left:15px;">
+		<div class=" pr+ pl+ pt+" lx-scrollbar style="padding-right:10px; padding-top:15px; padding-left:15px;" style="max-height: {{scrollbarHeight}}">
                 <ul class="list">
                     <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400">
-                        <div ng-hide="message.sent" class="list-row__primary" ng-click="currentMessage.subject=message.subject; currentMessage.date=message.date; currentMessage.sent=message.sent; modal('readMail');  opendDialog('test');">
+                        <div ng-hide="message.sent" class="list-row__primary" ng-click="currentMessage.subject=message.subject; currentMessage.date=message.date; currentMessage.sent=message.sent; changeRight('readMail');">
 
                             <img gravatar-src="currentContact.address" class="img-round img-round-m">
                             
 
                         </div>
 
-                        <div ng-show="message.sent" class="list-row__primary" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject;  currentMessage.date=message.date;  currentMessage.sent=message.sent; modal('readMail'); opendDialog('test')">
+                        <div ng-show="message.sent" class="list-row__primary" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject;  currentMessage.date=message.date;  currentMessage.sent=message.sent; changeRight('readMail'); ">
 
 
                             <i class="icon icon--m icon--grey bgc-grey-300 icon--circled mdi mdi-send"></i>
 
                         </div>
 
-                        <div class="list-row__content" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; modal('readMail'); opendDialog('test')">
+                        <div class="list-row__content" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; changeRight('readMail'); ">
                             <span class="display-block" style="font-size:0.833rem">{{message.subject}} <span class="tc-light-blue-200" style="font-size:0.694rem"> 9:52 PM.</span> </span>
                             <span class="display-block fs-body-1 tc-black-2">{{message.snippet}}</span>
 
@@ -142,109 +144,61 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
                     </button>
 
 
-        </div>
+        </div></div></div>
+        <div ng-switch-when="readMail">
+                    <div class="toolbar" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.12), 0 2px 0px 0 rgba(0, 0, 0, 0.0);">
+					
+                    <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" ng-hide="currentContact.name">Choose a contact to the left</span>
+					
+                    <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" style="border-right:1px solid #68A0B0;" ng-show="currentContact.name">{{currentContact.name}}: {{currentMessage.subject}}</span>
+					
+                    <button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name">
+                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-reply"></i>
+                    </button>
 
-    </div>
+                    <button class="btn btn--s btn--blue btn--icon mr+" lx-ripple ng-show="currentContact.name">
+                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-reply-all"></i>
+                    </button>
+                    
+                    <button class="btn btn--s btn--blue btn--icon mr+" lx-ripple ng-show="currentContact.name">
 
+                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-forward mr+"></i>
+                    </button>
+                    <button class="btn btn--s btn--blue btn--icon mr+" lx-ripple ng-show="currentContact.name">
 
+                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-pen mr+"></i>
+                    </button>
+                    <button class="btn btn--s btn--blue btn--icon mr+" lx-ripple ng-show="currentContact.name">
 
-    <!-- Dialog -->
+                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-delete mr+"></i>
+                    </button>
 
-    <lx-dialog class="dialog dialog--l" id="test" auto-close="true" onclose="closingDialog()" onscrollend="scrollEndDialog()">
-        <div ng-switch="modalShow">
-            <div ng-switch-when="readMail">
-                <div class="dialog__header">
-                    <div class="toolbar  pl++ " style="background-color:rgb(248, 248, 248)">
-
-                        <span class="toolbar__label fs-title tc-light-blue-200 valign" style="font-size:0.9em;">
-                    <div ng-hide="currentMail.sent">
-
-                            <img ng-show="currentContact.avatar" src="{{currentContact.avatar}}" width="36" height="36" class="img-round  mr" style="display:inline;">
-                            <i ng-hide="currentContact.avatar" class="icon icon--m icon--grey bgc-grey-400 icon--circled mdi mdi-account mr" style="margin-top:3px;"></i>
-                {{currentMessage.date}}: {{currentMessage.subject}} 
-
-                        </div>
-
-                        <div ng-show="currentMail.sent">
-
-
-                            <i class="icon icon--m icon--grey bgc-grey-300 icon--circled mdi mdi-send mr+" style="margin-top:3px;"></i>
-                {{currentMessage.date}}: {{currentMessage.subject}} 
-
-                        </div>
-                </span>
-                        <div class="toolbar__right">
-                            <button class="btn btn--l btn--icon" lx-ripple lx-dialog-close>
-                                <i class="mdi tc-grey-500 mdi-close"></i>
-                            </button>
-                        </div>
-
-                    </div>
-
-
-                    <div class="divider divider--dark"></div>
 
 
                 </div>
+		<div class=" mr+++ ml+++ pt+++" lx-scrollbar style="max-height: {{scrollbarHeight}}">
 
-
-
-                <div class="dialog__content fs-body-1 ml p++">
                     <p ng-bind-html="emailbody"></p>
 
-
+</div>
                     
-                </div>
-                <div class="divider divider--dark"></div>
-                <div class="toolbar valign halign">
-
-
-                    <button class="btn btn--s btn--blue btn--icon mr" lx-ripple ng-click="modal('writeMessage'); write.contact=currentContact.name; write.subject='re: ' + currentMessage.subject">
-                        <i class=" icon icon--s tc-blue-right icon--flat mdi mdi-reply "></i>
-                    </button>
-                    <button class="btn btn--s btn--blue btn--icon mr " lx-ripple>
-                        <i class="icon icon--s tc-blue-right icon--flat mdi mdi-reply-all "></i>
-                    </button>
-                    <button class="btn btn--s btn--blue btn--icon mr " lx-ripple>
-                        <i class="icon icon--s tc-blue-right icon--flat mdi mdi-forward "></i>
-                    </button>
-                    <button class="btn btn--s btn--blue btn--icon mr " lx-ripple>
-
-                        <i class="icon icon--s tc-blue-right icon--flat mdi mdi-delete "></i>
-                    </button>
-
-                    <!--<button class="btn btn--s btn--blue btn--icon mr ml " lx-ripple>
-                <i class="icon icon--s tc-blue-right icon--flat mdi mdi-attachment "></i>
-            </button>
-            <div class="dialog__actions ">
-                <button class="btn btn--m btn--black btn--flat " lx-ripple lx-dialog-close>Cancel</button>
-                <button class="btn btn--m btn--black btn--flat " lx-ripple>Lorem Ipsum</button>
-            </div>-->
-                </div>
             </div>
             <div ng-switch-when="writeMail">
-                <div class="dialog__header">
                     <div class="toolbar  pl++" style="background-color:rgb(248, 248, 248)">
 
                         <span class="toolbar__label tc-light-blue-200 valign ">
-                            <button class="btn btn--l btn--icon" lx-ripple lx-dialog-close>
-                                <i class="mdi tc-grey-500 mdi-arrow-left"></i>
-                            </button>
+                            
                 </span>
                         <div class="toolbar__right">
-                            <button class="btn btn--l btn--icon" lx-ripple lx-dialog-close>
-                                <i class="mdi tc-grey-500 mdi-close"></i>
-                            </button>
+                            
                         </div>
 
-                    </div>
-
+                
 
                     <div class="divider divider--dark"></div>
 
 
                 </div>
-                <div class="dialog__content fs-body-1 ml++ mr++ p">
                     <form>
                         <lx-text-field class="mr++" label="Contact " fixed-label="true" icon="account">
                             <input type="text " ng-model="write.contact">
@@ -261,33 +215,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
                     </form>
                     <button class="btn btn--l btn--blue tc-light-blue-200 btn--flat">Send <i class="mdi tc-light-blue-200 mdi-send"></i>
                     </button>
-                </div>
-
+                
             </div>
-        </div>
-    </lx-dialog>
+
+    </div>
 
 
 
-    <script>
-        (function ($) {
-            $(window).load(function () {
-                $('.stretch').css({
-                    height: $(window).innerHeight() - 65
-                });
-
-            });
-
-
-            $(window).resize(function () {
-                $('.stretch').css({
-                    height: $(window).innerHeight() - 65
-                });
-
-            });
+    <!-- Dialog -->
 
 
 
 
-        })(jQuery);
-    </script>
+    

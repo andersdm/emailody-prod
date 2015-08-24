@@ -9,7 +9,7 @@ angular.module('myApp.view1', ['ngRoute'])
     });
 }])
 
-.controller('View1Ctrl', function ($scope, $http, $sce, LxNotificationService, LxDialogService) {
+.controller('View1Ctrl', function ($scope, $http, $sce, $window, LxNotificationService, LxDialogService) {
     // Load all registered users
 
     $http.get('/v1/gmail/contacts/1').
@@ -34,11 +34,14 @@ angular.module('myApp.view1', ['ngRoute'])
         date: '',
         sent: ''
     }
-
-    $scope.modal = function (what) {
-        $scope.modalShow = what
+	$scope.rightShow = 'listMails'
+    
+    $scope.changeRight = function (what) {
+        $scope.rightShow = what
     }
-
+	
+	
+	
     $scope.write = {
         contact: ''
     }
@@ -55,125 +58,6 @@ angular.module('myApp.view1', ['ngRoute'])
 
         });
     }
-
-    /*$scope.chats = [
-        {
-            subject: 'Confuse my cat',
-            snippet: 'I love cheese, especially airedale queso. Cheese and biscuits halloumi...',
-            date: 'May 1. 2015',
-            sent: '',
-            read: 'true'
-        },
-
-        {
-            subject: 'My hovercraft is full of eels.',
-            snippet: 'Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro...',
-            date: 'May 1. 2015',
-            sent: 'true',
-            read: 'true'
-        },
-        {
-            subject: 'If I said you had a beautiful body',
-            snippet: 'Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro...',
-            date: 'May 1. 2015',
-            sent: '',
-            read: 'true'
-        },
-
-        {
-            subject: 'Would you hold it against me',
-            snippet: 'Scratch the furniture spit up on light gray carpet instead of adjacent...',
-            date: 'May 1. 2015',
-            sent: '',
-            read: 'true'
-        },
-        {
-            subject: 'I am no longer infected',
-            snippet: 'Webtwo ipsum dolor sit amet, eskobo chumby doostang bebo...',
-            date: 'May 1. 2015',
-            sent: 'true',
-            read: 'true'
-        },
-        {
-            subject: 'This is Monty Pythons flying circus',
-            snippet: "Lebowski ipsum yeah? What do you think happens when you get rad?...",
-            date: 'May 1. 2015',
-            sent: 'true',
-            read: 'true'
-        }
-
-    ];
-
-    /*$scope.mails = [
-        {
-            name: 'Camilla Kær Mørkholt',
-            avatar: 'img/Camilla.jpg',
-            snippet: 'I love cheese, especially airedale queso. Cheese and biscuits halloumi...',
-            date: '11:02 PM'
-      },
-        {
-            name: 'Julie Seabrook',
-            avatar: 'img/Julie.jpg',
-            snippet: 'Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro...',
-            date: '11:01 PM'
-      },
-        {
-            name: 'Gener Delosreyes',
-            avatar: '',
-            snippet: "Raw denim pour-over readymade Etsy Pitchfork. Four dollar toast pickled...",
-            date: '11:00 PM'
-      },
-        {
-            name: 'Facebook',
-            avatar: 'img/Facebook.png',
-            snippet: 'Scratch the furniture spit up on light gray carpet instead of adjacent...',
-            date: '10:59 PM'
-      },
-        {
-            name: 'Magnus Ohrt Nissen',
-            avatar: 'img/Magnus.jpg',
-            snippet: 'Webtwo ipsum dolor sit amet, eskobo chumby doostang bebo...',
-            date: '10:58 PM'
-        },
-        {
-            name: 'Gani Ferrer',
-            avatar: '',
-            snippet: "Lebowski ipsum yeah? What do you think happens when you get rad?...",
-            date: '10:57 PM'
-      },
-        {
-            name: 'Maja Damsgaard Mikkelsen',
-            avatar: 'img/Maja.jpg',
-            snippet: 'Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro...',
-            date: '10:56 PM'
-      },
-        {
-            name: 'Gener Delosreyes',
-            avatar: '',
-            snippet: "Raw denim pour-over readymade Etsy Pitchfork. Four dollar toast...",
-            date: '10:55 PM'
-      },
-        {
-            name: 'Lawrence Ray',
-            avatar: '',
-            snippet: 'Scratch the furniture spit up on light gray carpet instead of...',
-            date: '10:54 PM'
-      },
-        {
-            name: 'Magnus Ohrt Nissen',
-            avatar: '',
-            snippet: 'Webtwo ipsum dolor sit amet, eskobo chumby doostang bebo...',
-            date: '10:53 PM'
-        },
-        {
-            name: 'Sebastian Bue Rakov',
-            avatar: 'img/Sebastian.jpg',
-            snippet: "Lebowski ipsum yeah? What do you think happens when you get rad?...",
-            date: '10:52 PM'
-      }
-    ];*/
-
-
 
     $scope.random = function (array) {
         var m = array.length,
@@ -202,10 +86,20 @@ angular.module('myApp.view1', ['ngRoute'])
         LxNotificationService.info('Dialog closed!');
     };
     //http://stackoverflow.com/questions/15458609/execute-function-on-page-load
-    var stretch = function () {
-        $('.stretch').css({
-            height: $(window).innerHeight() + 565
-        });
+    
+    var w = angular.element($window);
+    
+    w.bind('resize', function () {
+		$scope.$apply(function() {
+	$scope.stretch();
+	console.log('resize');
+	})});
+    
+    $scope.stretch = function () {
+        
+        console.log('test')
+        $scope.scrollbarHeight = w.innerHeight()-100 + 'px'
+        
     };
-    stretch();
+    $scope.stretch();
 });
