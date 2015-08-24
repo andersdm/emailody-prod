@@ -189,7 +189,7 @@ line-height:2rem !important;
 font-size:1.728rem !important;
 }
 
-@media screen and (max-width: 1366px) {
+@media screen and (max-width: 1366px) and (min-width:1024px) {
 [flex-container=row]>[flex-item="3"] {
 flex: 0 0 33.333%;
 max-width:33.333%;
@@ -197,6 +197,18 @@ max-width:33.333%;
 html {
     font-size:16px;
 }
+}
+
+@media screen and (min-width: 1024px) {
+.hiddenDesktop {
+    display:none;
+}
+}
+
+@media screen and (max-width: 1024px) {
+.hiddenMobile{
+display:none;
+}    
 }
 
 .img-round-l {

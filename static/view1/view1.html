@@ -21,7 +21,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 <div class="" flex-container="row">
 
 
-    <div flex-item="3" flex-item-order="1" style="box-shadow:0 3px 3px rgba(0, 0, 0, 0.3); position:relative; z-index:1; background-color:#F8F8F8">
+    <div flex-item="3" flex-item-order="1" style="box-shadow:0 3px 3px rgba(0, 0, 0, 0.3); position:relative; z-index:1; background-color:#F8F8F8" ng-class="leftWrapper">
         
 
 
@@ -45,9 +45,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
                 </div>
-                <div  class="pr+ pl pt+ " lx-scrollbar style="max-height: {{scrollbarHeight}}">
+                <div  class="pr+ pl pt+ mb mt" lx-scrollbar style="max-height: {{scrollbarHeight}}">
                 <ul class="list">
-                    <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="currentContact.name = contact.name; currentContact.address = contact.address; getMessages(contact.jobId); changeRight('listMails')">
+                    <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="currentContact.name = contact.name; currentContact.address = contact.address; getMessages(contact.jobId); ">
                         <div class="list-row__primary">
                             <img gravatar-src="contact.address;" class="img-round img-round-l">
                             <!--<i class="icon icon--l icon--grey bgc-grey-400 icon--circled mdi mdi-account" ng-hide="contact.gravatarHash" style="width:48px; height:48px; font-size:32px; padding-top:5px; color:#F8F8F8"></i>
@@ -79,13 +79,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
             </div>
         </div>
 
-    <div class="" flex-item="" flex-item-order="2">
+    <div class="" flex-item="" flex-item-order="2" ng-class="rightWrapper">
 		<div ng-switch="rightShow">
             <div ng-switch-when="listMails">
                 <div class="toolbar" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.12), 0 2px 0px 0 rgba(0, 0, 0, 0.0);">
 					
                     <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" ng-hide="currentContact.name">Choose a contact to the left</span>
-					
+					<button class="btn btn--s btn--blue btn--icon ml+ mr+ hiddenDesktop" lx-ripple ng-show="currentContact.name" ng-click="mobileBack()">
+                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-backburger"></i>
+                    </button>
+                    
                     <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" style="border-right:1px solid #68A0B0;" ng-show="currentContact.name">{{currentContact.name}}</span>
 					
                     <button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name">
@@ -104,7 +107,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
                 </div>
 
-		<div class=" pr+ pl+ pt+" lx-scrollbar style="padding-right:10px; padding-top:15px; padding-left:15px;" style="max-height: {{scrollbarHeight}}">
+		<div class=" pr+ pl+ pt+ mb mt" lx-scrollbar style="max-height: {{scrollbarHeight}}">
                 <ul class="list">
                     <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400">
                         <div ng-hide="message.sent" class="list-row__primary" ng-click="currentMessage.subject=message.subject; currentMessage.date=message.date; currentMessage.sent=message.sent; changeRight('readMail');">
@@ -148,9 +151,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
         <div ng-switch-when="readMail">
                     <div class="toolbar" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.12), 0 2px 0px 0 rgba(0, 0, 0, 0.0);">
 					
-                    <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" ng-hide="currentContact.name">Choose a contact to the left</span>
-					
-                    <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" style="border-right:1px solid #68A0B0;" ng-show="currentContact.name">{{currentContact.name}}: {{currentMessage.subject}}</span>
+					<button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name" ng-click="changeRight('listMails')">
+                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-backburger"></i>
+                    </button>
+                    <span class="fs-toolbar-title tc-light-blue-200 pr+" style="border-right:1px solid #68A0B0;" ng-show="currentContact.name">{{currentContact.name}}: {{currentMessage.subject}}</span>
 					
                     <button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name">
                         <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-reply"></i>
@@ -176,7 +180,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
                 </div>
-		<div class=" mr+++ ml+++ pt+++" lx-scrollbar style="max-height: {{scrollbarHeight}}">
+		<div class=" pr+++ pl+++ pt+++ mt mb" lx-scrollbar style="max-height: {{scrollbarHeight}}">
 
                     <p ng-bind-html="emailbody"></p>
 

@@ -12,6 +12,14 @@ angular.module('myApp.view1', ['ngRoute'])
 .controller('View1Ctrl', function ($scope, $http, $sce, $window, LxNotificationService, LxDialogService) {
     // Load all registered users
 
+    $scope.mobileBack = function () {
+    $scope.leftWrapper = null;
+    $scope.rightWrapper = 'hiddenMobile';
+    }
+    
+    $scope.leftWrapper = null
+    $scope.rightWrapper = 'hiddenMobile'
+    
     $http.get('/v1/gmail/contacts/1').
         success(function(data) {
             $scope.contacts = data['contacts'];
@@ -21,6 +29,9 @@ angular.module('myApp.view1', ['ngRoute'])
 		$http.get('/v1/gmail/messages/results/'+jobId).
         success(function(data) {
             $scope.messages = data;
+            $scope.rightShow = 'listMails';
+            $scope.leftWrapper = 'hiddenMobile';
+            $scope.rightWrapper = null;
         });
     }
     
@@ -97,8 +108,7 @@ angular.module('myApp.view1', ['ngRoute'])
     
     $scope.stretch = function () {
         
-        console.log('test')
-        $scope.scrollbarHeight = w.innerHeight()-100 + 'px'
+        $scope.scrollbarHeight = w.innerHeight()-116 + 'px'
         
     };
     $scope.stretch();

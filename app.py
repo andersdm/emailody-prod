@@ -43,6 +43,7 @@ q = Queue(connection=conn)
 
 @app.route('/')
 def index():
+    #Fjern if statements i prod.
     if 'contactsNextPageToken' not in session:
         session['contactsNextPageToken'] = 0
     if 'contacts' not in session:
