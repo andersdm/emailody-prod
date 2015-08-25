@@ -45,7 +45,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
                 </div>
-                <div  class="pr+ pl pt+ mb mt" lx-scrollbar style="max-height: {{scrollbarHeight}}">
+                <div ng-scrollbars ng-scrollbars-config="ngScrollbarsConfig" class="container pr+ pl pt mb mt" style="height:{{stretch()}}">
                 <ul class="list">
                     <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="currentContact.name = contact.name; currentContact.address = contact.address; getMessages(contact.jobId); ">
                         <div class="list-row__primary">
@@ -76,7 +76,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
                 </div>
 
-            </div>
+            </div >
         </div>
 
     <div class="" flex-item="" flex-item-order="2" ng-class="rightWrapper">
@@ -89,7 +89,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
                         <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-backburger"></i>
                     </button>
                     
-                    <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" style="border-right:1px solid #68A0B0;" ng-show="currentContact.name">{{currentContact.name}}</span>
+                    <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" style="border-right:1px solid #68A0B0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis" ng-show="currentContact.name">{{currentContact.name}}</span>
 					
                     <button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name">
                         <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-attachment"></i>
@@ -107,7 +107,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
                 </div>
 
-		<div class=" pr+ pl+ pt+ mb mt" lx-scrollbar style="max-height: {{scrollbarHeight}}">
+		        <div ng-scrollbars ng-scrollbars-config="ngScrollbarsConfig" class="container pr+ pl pt mb mt" style="height:{{stretch()}}">
                 <ul class="list">
                     <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400">
                         <div ng-hide="message.sent" class="list-row__primary" ng-click="currentMessage.subject=message.subject; currentMessage.date=message.date; currentMessage.sent=message.sent; changeRight('readMail');">
@@ -154,7 +154,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 					<button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name" ng-click="changeRight('listMails')">
                         <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-backburger"></i>
                     </button>
-                    <span class="fs-toolbar-title tc-light-blue-200 pr+" style="border-right:1px solid #68A0B0;" ng-show="currentContact.name">{{currentContact.name}}: {{currentMessage.subject}}</span>
+                    <span class="fs-toolbar-title tc-light-blue-200 pr+" style="border-right:1px solid #68A0B0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis" ng-show="currentContact.name">{{currentContact.name}}: {{currentMessage.subject}}</span>
 					
                     <button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name">
                         <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-reply"></i>
@@ -180,7 +180,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
                 </div>
-		<div class=" pr+++ pl+++ pt+++ mt mb" lx-scrollbar style="max-height: {{scrollbarHeight}}">
+		<div class=" pr+++ pl+++ pt+++ mt mb" lx-scrollbar style="height: {{scrollbarHeight}}">
 
                     <p ng-bind-html="emailbody"></p>
 

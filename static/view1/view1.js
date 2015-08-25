@@ -9,8 +9,11 @@ angular.module('myApp.view1', ['ngRoute'])
     });
 }])
 
+
 .controller('View1Ctrl', function ($scope, $http, $sce, $window, LxNotificationService, LxDialogService) {
     // Load all registered users
+
+
 
     $scope.mobileBack = function () {
     $scope.leftWrapper = null;
@@ -87,6 +90,26 @@ angular.module('myApp.view1', ['ngRoute'])
 
         return array;
     }
+ var w = angular.element($window);
+
+$scope.stretch = function () {
+        
+        return w.innerHeight()-132 + 'px'
+        
+         
+}
+
+$scope.ngScrollbarsConfig = {
+    autoHideScrollbar: true,
+    theme: 'dark-thick',
+    advanced:{
+        updateOnContentResize: true
+    },
+    
+        scrollInertia: 0,
+        axis: 'y'
+    }
+
 
 
     $scope.opendDialog = function (dialogId) {
@@ -103,13 +126,9 @@ angular.module('myApp.view1', ['ngRoute'])
     w.bind('resize', function () {
 		$scope.$apply(function() {
 	$scope.stretch();
-	console.log('resize');
 	})});
     
-    $scope.stretch = function () {
-        
-        $scope.scrollbarHeight = w.innerHeight()-116 + 'px'
-        
-    };
-    $scope.stretch();
+    
+    
+
 });

@@ -230,3 +230,11 @@ display:none;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.container {
+    width: inherit;
+}
+
+._mCS_1 .mCSB_dragger .mCSB_dragger_bar{ background-color: #78ACB9 !important; opacity:0.5;}
+
+._mCS_2 .mCSB_dragger .mCSB_dragger_bar{ background-color: #78ACB9 !important; opacity:0.5;}
