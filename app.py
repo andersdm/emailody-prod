@@ -44,14 +44,11 @@ q = Queue(connection=conn)
 @app.route('/')
 def index():
     
-        session['contactsNextPageToken'] = 0
-    
-        session['contacts'] = []
-    
-        session['seen'] = []
-    
-        session['mails'] = []
-        
+    session['contactsNextPageToken'] = 0
+    session['contacts'] = []
+    session['seen'] = []
+    session['mails'] = []
+
     if 'credentials' not in session:
         return redirect(url_for('oauth2callback'))
     credentials = client.OAuth2Credentials.from_json(session['credentials'])
