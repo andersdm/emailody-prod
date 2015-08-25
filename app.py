@@ -43,15 +43,15 @@ q = Queue(connection=conn)
 
 @app.route('/')
 def index():
-    #Fjern if statements i prod.
-    if 'contactsNextPageToken' not in session:
+    
         session['contactsNextPageToken'] = 0
-    if 'contacts' not in session:
+    
         session['contacts'] = []
-    if 'seen' not in session:
+    
         session['seen'] = []
-    if 'mails' not in session:
+    
         session['mails'] = []
+        
     if 'credentials' not in session:
         return redirect(url_for('oauth2callback'))
     credentials = client.OAuth2Credentials.from_json(session['credentials'])
