@@ -99,16 +99,7 @@ $scope.stretch = function () {
          
 }
 
-$scope.ngScrollbarsConfig = {
-    autoHideScrollbar: true,
-    theme: 'dark-thick',
-    advanced:{
-        updateOnContentResize: true
-    },
-    
-        scrollInertia: 0,
-        axis: 'y'
-    }
+
 
 
 

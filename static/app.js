@@ -9,7 +9,6 @@ angular.module('myApp', [
   'myApp.version',
   'lumx',
   'ui.gravatar',
-  'ngScrollbars'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/view1'});
