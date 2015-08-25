@@ -116,6 +116,7 @@ def contacts(pagenr):
                     address = re.sub(r'[<>]', '', address)
                     Address = address.strip()
                     Name = From.rsplit(' ', 1)[0]
+                    Name = Name.replace('\"','')
                 
                 
 
