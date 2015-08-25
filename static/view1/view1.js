@@ -94,11 +94,10 @@ angular.module('myApp.view1', ['ngRoute'])
 
 $scope.stretch = function () {
         
-        return w.innerHeight()-132 + 'px'
-        
-         
+        $scope.scrollbarHeight = w.innerHeight()-132 + 'px'
 }
 
+$scope.stretch();
 
 
 
