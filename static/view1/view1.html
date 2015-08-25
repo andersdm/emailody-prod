@@ -46,7 +46,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
                 </div>
                 <!--<div ng-scrollbars ng-scrollbars-config="ngScrollbarsConfig" class="container pr+ pl" style="height:{{stretch()}}">-->
-                <div class="pr+ pl pt mt" style="height:{{scrollbarHeight}}; overflow:auto">
+                <div id="contacts" class="pr+ pl pt " style="height:{{scrollbarHeight}}; overflow:auto">
                 <ul class="list">
                     <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="currentContact.name = contact.name; currentContact.address = contact.address; getMessages(contact.jobId); ">
                         <div class="list-row__primary">
@@ -84,14 +84,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 		<div ng-switch="rightShow">
             <div ng-switch-when="listMails">
                 <div class="toolbar" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.12), 0 2px 0px 0 rgba(0, 0, 0, 0.0);">
-					
                     <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" ng-hide="currentContact.name">Choose a contact to the left</span>
 					<button class="btn btn--s btn--blue btn--icon ml+ mr+ hiddenDesktop" lx-ripple ng-show="currentContact.name" ng-click="mobileBack()">
                         <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-backburger"></i>
                     </button>
                     
                     <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" style="border-right:1px solid #68A0B0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis" ng-show="currentContact.name">{{currentContact.name}}</span>
-					
                     <button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name">
                         <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-attachment"></i>
                     </button>
@@ -103,13 +101,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
                         <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-delete mr+"></i>
                     </button>
-
+                    <div style="clear:both"></div>
 
 
                 </div>
 
 		        <!--<div ng-scrollbars ng-scrollbars-config="ngScrollbarsConfig" class="container pr+ pl pt mb mt" style="height:{{stretch()}}">-->
-                <div class="pr+ pl pt mb mt" style="height:{{stretch()}}; overflow:auto">
+                <div class="pr+ pl pt" style="height:{{stretch()}}; overflow:auto">
                 <ul class="list">
                     <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400">
                         <div ng-hide="message.sent" class="list-row__primary" ng-click="currentMessage.subject=message.subject; currentMessage.date=message.date; currentMessage.sent=message.sent; changeRight('readMail');">
