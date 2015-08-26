@@ -10,7 +10,7 @@ angular.module('myApp.view1', ['ngRoute'])
 }])
 
 
-.controller('View1Ctrl', function ($scope, $http, $sce, $window, LxNotificationService, LxDialogService) {
+.controller('View1Ctrl', function ($scope, $http, $sce, $window, $timeout, LxNotificationService, LxDialogService) {
     // Load all registered users
 
 
@@ -51,7 +51,9 @@ angular.module('myApp.view1', ['ngRoute'])
 	$scope.rightShow = 'listMails'
     
     $scope.changeRight = function (what) {
+        $timeout(function() {
         $scope.rightShow = what
+        },200);
     }
 	
 	
