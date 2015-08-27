@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view1', ['ngRoute'])
+angular.module('myApp.view1', ['ngRoute', 'base64'])
 
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/view1', {
@@ -10,7 +10,7 @@ angular.module('myApp.view1', ['ngRoute'])
 }])
 
 
-.controller('View1Ctrl', function ($scope, $http, $sce, $window, $timeout, LxNotificationService, LxDialogService) {
+.controller('View1Ctrl', function ($scope, $http, $sce, $window, $timeout, $base64, LxNotificationService, LxDialogService) {
     // Load all registered users
 
 
@@ -28,13 +28,15 @@ angular.module('myApp.view1', ['ngRoute'])
             $scope.contacts = data['contacts'];
         });
     
-    $scope.getMessages = function (jobId) {
-		$http.get('/v1/gmail/messages/results/'+jobId).
+    $scope.getMessages = function (id, pagenr, name, address) {
+		
+		$http.get('/v1/gmail/messages/' + id + '/' + pagenr).
         success(function(data) {
             $scope.messages = data;
             $scope.rightShow = 'listMails';
             $scope.leftWrapper = 'hiddenMobile';
             $scope.rightWrapper = null;
+            $scope.currentContact = {name: name, address: address };
         });
     }
     

@@ -9,14 +9,17 @@ import redis
 import urllib
 import base64
 import email
+import uuid
 from apiclient import errors
 from flask import Markup
 from flask import Flask, abort, redirect, url_for, Response, render_template, session, request
 #from flask.ext.sqlalchemy import SQLAlchemy
 #from sqlalchemy.dialects.postgresql import JSON
-from rq import Queue
-from rq.job import Job
-from worker import conn
+#from rq import Queue
+#from rq.job import Job
+#from worker import conn
+redis_url = os.getenv('REDISCLOUD_URL', 'redis://localhost:6379')
+conn = redis.StrictRedis.from_url(redis_url)
 from googleapiclient import discovery
 from googleapiclient.http import BatchHttpRequest
 from oauth2client import client
@@ -34,7 +37,7 @@ app.logger.setLevel(logging.ERROR)
 #app.config.from_object(os.environ['APP_SETTINGS'])
 #db = SQLAlchemy(app)
 
-q = Queue(connection=conn)
+#q = Queue(connection=conn)
 #from contacts import get_messages
 
 #from models import *
@@ -75,18 +78,16 @@ redirect_uri=url_for('oauth2callback',_external=True))
 
 
 @app.route('/v1/gmail/contacts/<int:pagenr>')
-def contacts(pagenr):    
-	# Authorize the httplib2.Http object with our credentials	
+def contacts(pagenr):
+    # Authorize the httplib2.Http object with our credentials	
     credentials = client.OAuth2Credentials.from_json(session['credentials'])
     
-    http = credentials.authorize(httplib2.Http())
+    http = credentials.authorize(httplib2.Http(cache=".cache"))
 
 # Build the Gmail service from discovery
 
     gmail_service = discovery.build('gmail', 'v1', http=http)
-    print session['seen']
     while (len(session['seen'])+1 < pagenr*10):
-        print len(session['seen'])
         
 # Retrieve a page of threads
 
@@ -121,10 +122,8 @@ def contacts(pagenr):
                 
 
             if From not in session['seen']:
-                job = q.enqueue_call(func=get_messages, args=(0,From.replace('\"',''), session['credentials']), result_ttl=5000)
                 Contact = {
-                    'jobId': str(job.get_id()),
-                    'messageId': results['id'],
+                    'id': len(session['seen']),
                     'date': Date,
                     'name': Name,
                     'address': Address,
@@ -168,20 +167,14 @@ def contacts(pagenr):
     response = {'nextPageToken': session['contactsNextPageToken'], 'contacts': session['contacts'][start:end]} 
     js = json.dumps(response)
     resp = Response(js, status=200, mimetype='application/json')
-    print len(session['seen'])
     return resp
 	
 @app.route('/v1/gmail/message/<msg_id>')
 def get_message(msg_id):
-    if 'credentials' not in session:
-        return flask.redirect(flask.url_for('oauth2callback'))
+    # Authorize the httplib2.Http object with our credentials	
     credentials = client.OAuth2Credentials.from_json(session['credentials'])
-    if credentials.access_token_expired:
-        return flask.redirect(flask.url_for('oauth2callback'))    
-
-# Authorize the httplib2.Http object with our credentials
-
-    http = credentials.authorize(httplib2.Http())
+    
+    http = credentials.authorize(httplib2.Http(cache=".cache"))
 
 # Build the Gmail service from discovery
 
@@ -220,15 +213,68 @@ def get_message(msg_id):
     except errors.HttpError, error:
         print 'An error occurred: %s' % error
 
-@app.route("/v1/gmail/messages/results/<job_key>", methods=['GET'])
-def get_results(job_key):
-    job = Job.fetch(job_key, connection=conn)
-    if job.is_finished:
-        js = json.dumps(job.result)
-        resp = Response(js, status=200, mimetype='application/json')
-        return resp
-    else:
-        return "Nay!", 202
+@app.route("/v1/gmail/messages/<int:contactId>/<int:pagenr>", methods=['GET'])
+def get_messages(contactId,pagenr):
+    contact = session['seen'][contactId]
+    credentials = client.OAuth2Credentials.from_json(session['credentials'])
+    http = credentials.authorize(httplib2.Http(cache=".cache"))
+
+# Build the Gmail service from discovery
+
+    gmail_service = discovery.build('gmail', 'v1', http=http)
+    
+    def mailscallbackfunc(result, results, moreresults):
+
+       # in old Python versions:
+       # if seen.has_key(marker)
+       # but in new ones:
+        if 'UNREAD' in results['labelIds']:
+            Unread = 'true'
+        else:
+            Unread = 'false'
+        for header in results['payload']['headers']:
+            if header['name'] == 'Date':
+                Date = header['value']
+            if header['name'] == 'From':
+                From = header['value']
+                if From == "Anders Damsgaard <andersdm@gmail.com>": #SKAL ÆNDRES
+                    Sent = True
+                else:
+					Sent = False
+            if header['name'] == 'Subject':
+                Subject = header['value']
+                
+        Contact = {
+            'messageId': results['id'],
+            'date': Date,
+            'subject': Subject,
+            'snippet': results['snippet'],
+            'unread': Unread,
+            'sent': Sent
+            }
+        
+        session['mails'].append(Contact)
+            
+    #for msg_id in message_ids['messages']:
+    #    batchContacts.add(gmail_service.users().messages().get(userId='me',
+    #              id=msg_id['id'], format='metadata',
+    #              metadataHeaders=['from', 'date']))
+    #batchContacts.execute()
+    
+    query = "\"to:'" + contact + "' AND from:me \" OR from:'" + contact + "'"
+    message_ids = gmail_service.users().messages().list(userId='me',
+            maxResults=10, labelIds='INBOX', q=query).execute()
+    
+    batchMails = BatchHttpRequest(callback=mailscallbackfunc)
+    
+    for msg_id in message_ids['messages']:
+        batchMails.add(gmail_service.users().messages().get(userId='me',
+                  id=msg_id['id'], format='metadata',
+                  metadataHeaders=['from', 'date', 'subject']))
+    batchMails.execute()
+    js = json.dumps(session['mails'])
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
     
 #if __name__ == '__main__':
