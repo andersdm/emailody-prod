@@ -26,10 +26,15 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
     $http.get('/v1/gmail/contacts/1').
         success(function(data) {
             $scope.contacts = data['contacts'];
+            $http.get('/v1/gmail/listmessages').
+                success(function(data) {
+                $scope.messageslist = data;
+        });
         });
     
     $scope.getMessages = function (id, pagenr, name, address) {
-		
+	   $scope.messages = $scope.messageslist[id];
+        /*
 		$http.get('/v1/gmail/messages/' + id + '/' + pagenr).
         success(function(data) {
             $scope.messages = data;
@@ -37,7 +42,7 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
             $scope.leftWrapper = 'hiddenMobile';
             $scope.rightWrapper = null;
             $scope.currentContact = {name: name, address: address };
-        });
+        }); */
     }
     
     $scope.currentContact = {
@@ -99,9 +104,6 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
 $scope.stretch = function () {
         
         $scope.scrollbarHeight = w.innerHeight()-$("#contacts").offset().top + 'px'
-        console.log($("#contacts").offset().top)
-        console.log(w.innerHeight())
-        console.log($scope.scrollbarHeight)
         
 }
 
