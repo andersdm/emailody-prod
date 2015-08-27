@@ -4,12 +4,12 @@ content-length: 59837
 x-xss-protection: 1; mode=block
 content-location: https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest
 x-content-type-options: nosniff
-expires: Thu, 27 Aug 2015 09:35:38 GMT
+expires: Thu, 27 Aug 2015 09:40:56 GMT
 vary: Origin, X-Origin
 server: GSE
 etag: "ye6orv2F-1npMW3u9suM3a7C5Bo/hPQpcOx1jxdLJJoNmiYxoTv2oFc"
 cache-control: public, max-age=300, must-revalidate, no-transform
-date: Thu, 27 Aug 2015 09:30:38 GMT
+date: Thu, 27 Aug 2015 09:35:56 GMT
 x-frame-options: SAMEORIGIN
 alt-svc: quic=":443"; p="1"; ma=604800
 content-type: application/json; charset=UTF-8

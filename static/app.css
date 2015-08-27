@@ -232,7 +232,7 @@ display:none;
 }
 
 
-/* Animations */
+/* Animations 
 
 .my-repeat-animation.ng-enter, 
 .my-repeat-animation.ng-leave, 
@@ -259,10 +259,11 @@ display:none;
   left:-10px;
   opacity:0;
 }
-*/
+
 .my-repeat-animation.ng-move {
   opacity:0.5;
 }
 .my-repeat-animation.ng-move.ng-move-active {
   opacity:1;
 }
+*/
