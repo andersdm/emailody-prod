@@ -109,7 +109,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 		        <!--<div ng-scrollbars ng-scrollbars-config="ngScrollbarsConfig" class="container pr+ pl pt mb mt" style="height:{{stretch()}}">-->
                 <div class="pr+ pl pt" style="height:{{stretch()}}; overflow:auto">
                 <ul class="list">
-                    <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400">
+                    <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator my-repeat-animation" lx-ripple="grey-400">
                         <div ng-hide="message.sent" class="list-row__primary" ng-click="currentMessage.subject=message.subject; currentMessage.date=message.date; currentMessage.sent=message.sent; changeRight('readMail');">
 
                             <img gravatar-src="currentContact.address" class="img-round img-round-m">
