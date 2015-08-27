@@ -330,7 +330,7 @@ def get_messages2(contactId,pagenr):
     #              metadataHeaders=['from', 'date']))
     #batchContacts.execute()
     
-        query = "\"to:'" + contact + "' AND from:me \" OR from:'" + contact.encode('ascii') + "'"
+        query = "\"to:'" + contact + "' AND from:me \" OR from:'" + contact + "'"
         message_ids = gmail_service.users().messages().list(userId='me',
                 maxResults=10, labelIds='INBOX', q=query).execute()
     
