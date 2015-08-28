@@ -282,7 +282,7 @@ def get_messages(contactId,pagenr):
 
 @app.route("/v1/gmail/listmessages", methods=['GET'])
 def get_listmessages():
-    def get_mailslist(contact, result, index, credentials):
+    def get_mailslist(message_ids, result, index, credentials):
         mails = []
         
         def mailscallbackfunc(result, results, moreresults):
@@ -325,12 +325,7 @@ def get_listmessages():
         http = credentials.authorize(httplib2.Http(cache=".cache"))
         # Build the Gmail service from discovery
         gmail_service = discovery.build('gmail', 'v1', http=http)
-        query = "\"to:'" + contact + "' AND from:me \" OR from:'" + contact + "'"
-        message_ids = gmail_service.users().messages().list(userId='me',
-                maxResults=10, labelIds='INBOX', q=query).execute()
-
         batchMails = BatchHttpRequest(callback=mailscallbackfunc)
-
         for msg_id in message_ids['messages']:
             batchMails.add(gmail_service.users().messages().get(userId='me',
                       id=msg_id['id'], format='metadata',
@@ -339,14 +334,31 @@ def get_listmessages():
         results[index] = mails
         return True
 
+    credentials = client.OAuth2Credentials.from_json(session['credentials'])
+
+    http = credentials.authorize(httplib2.Http(cache=".cache"))
+    # Build the Gmail service from discovery
+
+    gmail_service = discovery.build('gmail', 'v1', http=http)
+	
+    def mailIdscallbackfunc(result, results, moreresults):
+        session['messageIds'].append(results)
+
+    batchMailIds = BatchHttpRequest(callback=mailIdscallbackfunc)
+	
+    for contact in session['seen']:
+        query = "\"to:'" + contact + "' AND from:me \" OR from:'" + contact + "'"
+        batchMailIds.add(gmail_service.users().messages().list(userId='me', maxResults=10, labelIds='INBOX', q=query))
+    batchMailIds.execute()
+
     threads = [None]*len(session['seen'])
     results  = [None]*len(session['seen'])
     
-    for i in range(len(session['seen'])):
-        threads[i] = Thread(target=get_mailslist, args=(session['seen'][i], results, i, session['credentials']))
+    for i in range(0, 9):
+        threads[i] = Thread(target=get_mailslist, args=(session['messageIds'][i], results, i, session['credentials']))
         threads[i].start()
                    
-    for i in range(len(threads)):
+    for i in range(0, 9):
         threads[i].join()
                    
     js = json.dumps(results)
