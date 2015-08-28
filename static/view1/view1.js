@@ -33,7 +33,11 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
         });
     
     $scope.getMessages = function (id, pagenr, name, address) {
-	   $scope.messages = $scope.messageslist[id];
+	    $scope.messages = $scope.messageslist[id];
+        $scope.rightShow = 'listMails';
+        $scope.leftWrapper = 'hiddenMobile';
+        $scope.rightWrapper = null;
+        $scope.currentContact = {name: name, address: address };
         /*
 		$http.get('/v1/gmail/messages/' + id + '/' + pagenr).
         success(function(data) {
@@ -60,7 +64,7 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
     $scope.changeRight = function (what) {
         $timeout(function() {
         $scope.rightShow = what
-        },200);
+        },150);
     }
 	
 	

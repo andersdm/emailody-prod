@@ -142,7 +142,7 @@ def contacts(pagenr):
                 session['contacts'].append(Contact)
                 session['seen'].append(From)
         
-        message_ids = gmail_service.users().messages().list(userId='me', maxResults=20, labelIds='INBOX', pageToken=session['contactsNextPageToken']).execute()
+        message_ids = gmail_service.users().messages().list(userId='me', maxResults=50, labelIds='INBOX', pageToken=session['contactsNextPageToken']).execute()
         batchContacts = BatchHttpRequest(callback=contactscallbackfunc)
         #return message_ids['messages'][0]['id']
         session['contactsNextPageToken'] = message_ids['nextPageToken']

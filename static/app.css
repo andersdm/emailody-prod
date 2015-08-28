@@ -37,23 +37,23 @@ li {
     cursor: hand;
 }
 
-.list-row:hover {
+/*.list-row:hover {
     /*    background-color: rgba(125, 179, 190, .20);*/
-    
+    /*
     background-color: white;
     /*border-radius: 5px 5px 5px 5px;*/
-    
+    /*
     border-radius: 5px 5px 5px 5px;
     border: 1px solid lightgrey;
     margin: -1px;
-}
+}*/
 
-.list-row.active:hover {
+/*.list-row.active:hover {
     background-color: white;
     border-radius: 5px 5px 5px 5px;
     border: 1px solid lightgrey;
     margin: 1px;
-}
+}*/
 
 .list-row.active {
     border: 1px solid lightgrey;
