@@ -14,7 +14,7 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
     // Load all registered users
 
 
-
+	$scope.page = {dataLoaded: false};
     $scope.mobileBack = function () {
     $scope.leftWrapper = null;
     $scope.rightWrapper = 'hiddenMobile';
@@ -29,6 +29,7 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
             $http.get('/v1/gmail/listmessages').
                 success(function(data) {
                 $scope.messageslist = data;
+                $scope.page = {dataLoaded: true};
         });
         });
     
