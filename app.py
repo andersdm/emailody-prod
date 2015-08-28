@@ -55,6 +55,9 @@ def index():
     session['contacts'] = []
     session['seen'] = []
     session['mails'] = []
+    session['messageIds'] = []
+    session['maillist'] = []
+    session['messagelist'] = []
 
     if 'credentials' not in session:
         return redirect(url_for('oauth2callback'))
