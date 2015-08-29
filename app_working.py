@@ -169,7 +169,7 @@ def contacts(pagenr):
     #batchMails.execute()
     if pagenr - 1 == 0:
         start = 0
-        end = 10
+        end = 9
     else:
         start = (pagenr - 1) * 10 -1 
         end = pagenr * 10 -1
@@ -221,8 +221,8 @@ def get_message(msg_id):
     except errors.HttpError, error:
         print 'An error occurred: %s' % error
 
-@app.route("/v1/gmail/messages/<int:contactId>", methods=['GET'])
-def get_messages(contactId):
+@app.route("/v1/gmail/messages/<int:contactId>/<int:pagenr>", methods=['GET'])
+def get_messages(contactId,pagenr):
     contact = session['seen'][contactId]
     credentials = client.OAuth2Credentials.from_json(session['credentials'])
     http = credentials.authorize(httplib2.Http(cache=".cache"))
@@ -259,7 +259,7 @@ def get_messages(contactId):
             'sent': Sent
             }
 
-        session['mails'].append(Contact)
+        mails.append(Contact)
 
     #for msg_id in message_ids['messages']:
     #    batchContacts.add(gmail_service.users().messages().get(userId='me',
@@ -278,8 +278,7 @@ def get_messages(contactId):
                   id=msg_id['id'], format='metadata',
                   metadataHeaders=['from', 'date', 'subject']))
     batchMails.execute()
-    response = {'messages': session['mails']}
-    js = json.dumps(response)
+    js = json.dumps(session['mails'])
     resp = Response(js, status=200, mimetype='application/json')
     return resp
 

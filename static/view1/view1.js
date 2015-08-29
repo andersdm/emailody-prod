@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view1', ['ngRoute', 'base64'])
+angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
 
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/view1', {
@@ -10,35 +10,68 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
 }])
 
 
-.controller('View1Ctrl', function ($scope, $http, $sce, $window, $timeout, $base64, LxNotificationService, LxDialogService) {
+.controller('View1Ctrl', function ($scope, $http, $resource, $sce, $window, $timeout, $base64, LxNotificationService, LxDialogService) {
     // Load all registered users
 
+    var contacts = $resource("v1/gmail/contacts/:id");
+    var messages = $resource("v1/gmail/messages/:id");
+    contacts.get({
+        id: 1
+    }).$promise.then(function (data) {
+        $scope.contacts = data['contacts']
 
-	$scope.page = {dataLoaded: false};
+        $scope.page = {
+            dataLoaded: true
+        };
+
+
+        var i
+        $scope.messageslist = []
+        angular.forEach($scope.contacts, function (value, key) {
+            messages.get({
+                id: key
+            }).$promise.then(function (data) {
+                $scope.messageslist[key] = data['messages'];
+            }, console.log('test'));
+
+        });
+    })
+
+
+
+
     $scope.mobileBack = function () {
-    $scope.leftWrapper = null;
-    $scope.rightWrapper = 'hiddenMobile';
+        $scope.leftWrapper = null;
+        $scope.rightWrapper = 'hiddenMobile';
     }
-    
+
     $scope.leftWrapper = null
     $scope.rightWrapper = 'hiddenMobile'
-    
-    $http.get('/v1/gmail/contacts/1').
+
+    /*$http.get('/v1/gmail/contacts/1').
         success(function(data) {
             $scope.contacts = data['contacts'];
-            $http.get('/v1/gmail/listmessages').
+        $timeout(function() {
+        $scope.page = {dataLoaded: true};
+        },1000);
+        });
+    $http.get('/v1/gmail/listmessages').
                 success(function(data) {
                 $scope.messageslist = data;
-                $scope.page = {dataLoaded: true};
+        
+                
         });
-        });
-    
+    */
     $scope.getMessages = function (id, pagenr, name, address) {
-	    $scope.messages = $scope.messageslist[id];
+        $scope.messages = $scope.messageslist[id];
+        console.log($scope.messageslist[id]);
         $scope.rightShow = 'listMails';
         $scope.leftWrapper = 'hiddenMobile';
         $scope.rightWrapper = null;
-        $scope.currentContact = {name: name, address: address };
+        $scope.currentContact = {
+            name: name,
+            address: address
+        };
         /*
 		$http.get('/v1/gmail/messages/' + id + '/' + pagenr).
         success(function(data) {
@@ -49,7 +82,7 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
             $scope.currentContact = {name: name, address: address };
         }); */
     }
-    
+
     $scope.currentContact = {
         name: false,
         avatar: false
@@ -60,16 +93,16 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
         date: '',
         sent: ''
     }
-	$scope.rightShow = 'listMails'
-    
+    $scope.rightShow = 'listMails'
+
     $scope.changeRight = function (what) {
-        $timeout(function() {
-        $scope.rightShow = what
-        },150);
+        $timeout(function () {
+            $scope.rightShow = what
+        }, 150);
     }
-	
-	
-	
+
+
+
     $scope.write = {
         contact: ''
     }
@@ -79,8 +112,8 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
     }
 
     $scope.getMessage = function (msgId) {
-        $http.get('/v1/gmail/message/'+msgId).
-        success(function(data) {
+        $http.get('/v1/gmail/message/' + msgId).
+        success(function (data) {
             $scope.emailbody = data;
             $sce.trustAsHtml($scope.emailbody);
 
@@ -104,15 +137,15 @@ angular.module('myApp.view1', ['ngRoute', 'base64'])
 
         return array;
     }
- var w = angular.element($window);
+    var w = angular.element($window);
 
-$scope.stretch = function () {
-        
-        $scope.scrollbarHeight = w.innerHeight()-$("#contacts").offset().top + 'px'
-        
-}
+    $scope.stretch = function () {
 
-$scope.stretch();
+        $scope.scrollbarHeight = w.innerHeight() - $("#contacts").offset().top + 'px'
+
+    }
+
+    $scope.stretch();
 
 
 
@@ -125,15 +158,16 @@ $scope.stretch();
         LxNotificationService.info('Dialog closed!');
     };
     //http://stackoverflow.com/questions/15458609/execute-function-on-page-load
-    
+
     var w = angular.element($window);
-    
+
     w.bind('resize', function () {
-		$scope.$apply(function() {
-	$scope.stretch();
-	})});
-    
-    
-    
+        $scope.$apply(function () {
+            $scope.stretch();
+        })
+    });
+
+
+
 
 });

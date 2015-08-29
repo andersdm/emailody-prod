@@ -10,6 +10,7 @@ angular.module('myApp', [
   'lumx',
   'ui.gravatar',
   'ngAnimate'
+    
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/view1'});

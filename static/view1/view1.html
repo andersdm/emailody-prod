@@ -54,7 +54,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
                 <!--<div ng-scrollbars ng-scrollbars-config="ngScrollbarsConfig" class="container pr+ pl" style="height:{{stretch()}}">-->
                 <div id="contacts" class="pr+ pl pt " style="height:{{scrollbarHeight}}; overflow:auto">
                 <ul class="list">
-                    <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="getMessages(contact.id,0, contact.name, contact.address); ">
+                    <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="getMessages(contact.id, 0, contact.name, contact.address); ">
                         <div class="list-row__primary">
                             <img gravatar-src="contact.address;" class="img-round img-round-l">
                             <!--<i class="icon icon--l icon--grey bgc-grey-400 icon--circled mdi mdi-account" ng-hide="contact.gravatarHash" style="width:48px; height:48px; font-size:32px; padding-top:5px; color:#F8F8F8"></i>
@@ -113,7 +113,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
                 </div>
 
 		        <!--<div ng-scrollbars ng-scrollbars-config="ngScrollbarsConfig" class="container pr+ pl pt mb mt" style="height:{{stretch()}}">-->
-                <div class="pr+ pl pt" style="height:{{stretch()}}; overflow:auto">
+                <div class="pr+ pl pt" style="height:{{scrollbarHeight}}; overflow:auto">
                 <ul class="list">
                     <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator my-repeat-animation" lx-ripple="grey-400">
                         <div ng-hide="message.sent" class="list-row__primary" ng-click="currentMessage.subject=message.subject; currentMessage.date=message.date; currentMessage.sent=message.sent; changeRight('readMail');">
@@ -186,7 +186,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
                 </div>
-		<div class="pr+++ pl+++ pt+++ pb+++" style="height:{{stretch()}}; overflow:auto">
+		<div class="pr+++ pl+++ pt+++ pb+++" style="height:{{scrollbarHeight}}; overflow:auto">
 
                     <p ng-bind-html="emailbody"></p>
 
