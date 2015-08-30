@@ -64,7 +64,6 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
     */
     $scope.getMessages = function (id, pagenr, name, address) {
         $scope.messages = $scope.messageslist[id];
-        console.log($scope.messageslist[id]);
         $scope.rightShow = 'listMails';
         $scope.leftWrapper = 'hiddenMobile';
         $scope.rightWrapper = null;
@@ -111,13 +110,15 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
         return decodeURIComponent(url)
     }
 
+    
     $scope.getMessage = function (msgId) {
-        $http.get('/v1/gmail/message/' + msgId).
+        $scope.emailbody = 'v1/gmail/message/' + msgId;
+        /*$http.get('/v1/gmail/message/' + msgId).
         success(function (data) {
-            $scope.emailbody = data;
-            $sce.trustAsHtml($scope.emailbody);
+            $scope.emailbody = $sce.trustAsHtml(data);
+            
 
-        });
+        });*/
     }
 
     $scope.random = function (array) {

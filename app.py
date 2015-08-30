@@ -194,10 +194,12 @@ def get_message(msg_id):
                                              format='full').execute()
         
         message_payload = message['payload']
+        message_body = []
         
-
         if 'parts' in message_payload:
             message_parts = message_payload['parts']
+            if 'parts' in message_parts:
+                message_parts = message_parts['parts']
             for part in message_parts:
                 if part['mimeType'] == 'text/html':
                     message_body=part['body']
