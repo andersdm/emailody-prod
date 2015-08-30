@@ -13,6 +13,7 @@ import urllib
 import base64
 import email
 import uuid
+from premailer import transform
 from threading import Thread
 from apiclient import errors
 from flask import Markup
@@ -194,18 +195,17 @@ def get_message(msg_id):
                                              format='full').execute()
         
         message_payload = message['payload']
-        message_body = []
         
         if 'parts' in message_payload:
             message_parts = message_payload['parts']
             if 'parts' in message_parts:
-                message_parts = message_parts['parts']
+                message_parts['parts'] = message_parts['parts']
             for part in message_parts:
                 if part['mimeType'] == 'text/html':
                     message_body=part['body']
         else:
             message_body=message_payload['body']
-            
+        
         
         msg_str = base64.urlsafe_b64decode(message_body['data'].encode('utf-8'))
         
@@ -217,7 +217,7 @@ def get_message(msg_id):
         #    for payload in mime_msg.get_payload():
             # if payload.is_multipart(): ...
         #        message = payload.get_payload()
-        return msg_str
+        return transform(msg_str)
     
         #return message
     except errors.HttpError, error:

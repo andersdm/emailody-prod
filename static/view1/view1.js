@@ -15,6 +15,8 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
 
     var contacts = $resource("v1/gmail/contacts/:id");
     var messages = $resource("v1/gmail/messages/:id");
+    var message = $resource("v1/gmail/message/:id");
+    
     contacts.get({
         id: 1
     }).$promise.then(function (data) {
@@ -36,6 +38,15 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
 
         });
     })
+    
+    $scope.getMessage = function (msgId) {
+        $http.get('/v1/gmail/message/' + msgId).
+        success(function (data) {
+            $scope.emailbody = $sce.trustAsHtml(data);
+            
+
+        })};
+    
 
 
 
@@ -111,15 +122,7 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
     }
 
     
-    $scope.getMessage = function (msgId) {
-        $scope.emailbody = 'v1/gmail/message/' + msgId;
-        /*$http.get('/v1/gmail/message/' + msgId).
-        success(function (data) {
-            $scope.emailbody = $sce.trustAsHtml(data);
-            
-
-        });*/
-    }
+    
 
     $scope.random = function (array) {
         var m = array.length,
