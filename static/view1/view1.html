@@ -52,7 +52,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
                 </div>
                 <!--<div ng-scrollbars ng-scrollbars-config="ngScrollbarsConfig" class="container pr+ pl" style="height:{{stretch()}}">-->
-                <div id="contacts" class="pr+ pl pt " style="height:{{scrollbarHeight}}; overflow:auto">
+                <div id="contacts" class="pr+ pl pt " style="height:{{scrollbarHeight}}; overflow:auto;">
                 <ul class="list">
                     <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="getMessages(contact.id, 0, contact.name, contact.address); ">
                         <div class="list-row__primary">
@@ -186,12 +186,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
                 </div>
-		<div class="iframe-holder" style="height:{{scrollbarHeight}}; overflow:auto">
+		
 
-                    <div ng-bind-html="emailbody" class="mt++ ml++ mr++"></div>
+                    <div ng-bind-html="emailbody" class="pt++ pl++ pr++" style="height:{{scrollbarHeight}}; overflow:auto; margin-top:5px;"></div>
             <!--<iframe src="{{emailbody}}" style="width:100%; height:100%; border:0"></iframe>-->
 
-</div>
+
                     
             </div>
             <div ng-switch-when="writeMail">
