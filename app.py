@@ -13,8 +13,6 @@ import urllib
 import base64
 import email
 import uuid
-import bleach
-from lxml.html.clean import Cleaner
 from premailer import transform
 from threading import Thread
 from apiclient import errors
