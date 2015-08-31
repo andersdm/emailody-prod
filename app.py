@@ -13,6 +13,8 @@ import urllib
 import base64
 import email
 import uuid
+import bleach
+from lxml.html.clean import Cleaner
 from premailer import transform
 from threading import Thread
 from apiclient import errors
@@ -208,8 +210,18 @@ def get_message(msg_id):
         
         
         msg_str = base64.urlsafe_b64decode(message_body['data'].encode('utf-8'))
-        
+        transformed_msg = transform(msg_str)
 
+        clean_msg = re.sub("<html>", "", transformed_msg, flags=re.DOTALL)
+        clean_msg = re.sub("</html>", "", clean_msg, flags=re.DOTALL)
+        clean_msg = re.sub('<head>.*?</head>', "", clean_msg, flags=re.DOTALL)
+        clean_msg = re.sub('<head>.*?</head>', "", clean_msg, flags=re.DOTALL)
+        clean_msg = clean_msg.replace('body', 'div', 1)
+        clean_msg = re.sub('<body>', "", clean_msg, flags=re.DOTALL)
+        clean_msg = re.sub('</body>', "", clean_msg, flags=re.DOTALL)
+        clean_msg = re.sub('<style type="text/css">.*?</style>', "", clean_msg, flags=re.DOTALL)
+        clean_msg = re.sub('<style type="text/css">.*?</style>', "", clean_msg, flags=re.DOTALL)
+        
         #return msg_str
         #print 'Message snippet: %s' % message['snippet']
         #mime_msg = email.message_from_string(msg_str)
@@ -217,8 +229,8 @@ def get_message(msg_id):
         #    for payload in mime_msg.get_payload():
             # if payload.is_multipart(): ...
         #        message = payload.get_payload()
-        return transform(msg_str)
-    
+        #return render_template('emailbody.html', emailbody=clean_msg)
+        return clean_msg
         #return message
     except errors.HttpError, error:
         print 'An error occurred: %s' % error
