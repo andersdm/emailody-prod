@@ -8,9 +8,10 @@ angular.module('myApp', [
   'myApp.view2',
   'myApp.version',
   'lumx',
+  'lumx.scrollbar',
   'ui.gravatar',
   'ngAnimate'
-    
+
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/view1'});
@@ -20,6 +21,6 @@ angular.module('ui.gravatar').config([
   'gravatarServiceProvider', function(gravatarServiceProvider) {
     gravatarServiceProvider.defaults = {
       size     : 100,
-      "default": 'http://emailody-stage.herokuapp.com/static/img/avatars/avatar6.png'  // Mystery man as default for missing avatars
+      "default": 'http://www.emailody.com/static/img/avatars/avatar6.png'  // Mystery man as default for missing avatars
     };
 }]);

@@ -16,16 +16,22 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
     var contacts = $resource("v1/gmail/contacts/:id");
     var messages = $resource("v1/gmail/messages/:id");
     var message = $resource("v1/gmail/message/:id");
-    
-    contacts.get({
-        id: 1
-    }).$promise.then(function (data) {
-        $scope.contacts = data['contacts']
 
+    $scope.contacts = []
+    $scope.pageNr = 1
+
+    $scope.getContacts = function(pageNr) {
+    contacts.get({
+        id: pageNr
+    }).$promise.then(function (data) {
+        $scope.contacts = $scope.contacts.concat(data['contacts'])
+        console.log($scope.contacts)
         $scope.page = {
             dataLoaded: true
-        };
 
+        };
+            $scope.stretchLeft();
+        $scope.pageNr = $scope.pageNr + 1
 
         var i
         $scope.messageslist = []
@@ -38,15 +44,18 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
 
         });
     })
-    
+}
+
+$scope.getContacts(1)
+
     $scope.getMessage = function (msgId) {
         $http.get('/v1/gmail/message/' + msgId).
         success(function (data) {
             $scope.emailbody = $sce.trustAsHtml(data);
-            
+
 
         })};
-    
+
 
 
 
@@ -69,19 +78,24 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
     $http.get('/v1/gmail/listmessages').
                 success(function(data) {
                 $scope.messageslist = data;
-        
-                
+
+
         });
     */
-    $scope.getMessages = function (id, pagenr, name, address) {
+    $scope.getMessages = function (id, pagenr, name, address, initial) {
         $scope.messages = $scope.messageslist[id];
         $scope.rightShow = 'listMails';
-        $scope.leftWrapper = 'hiddenMobile';
-        $scope.rightWrapper = null;
         $scope.currentContact = {
             name: name,
-            address: address
+            address: address,
+            initial: initial
         };
+        $timeout(function () {
+        $scope.leftWrapper = 'hiddenMobile';
+        $scope.rightWrapper = null;
+
+
+        }, 150);
         /*
 		$http.get('/v1/gmail/messages/' + id + '/' + pagenr).
         success(function(data) {
@@ -91,6 +105,9 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
             $scope.rightWrapper = null;
             $scope.currentContact = {name: name, address: address };
         }); */
+
+            $scope.stretchRight();
+
     }
 
     $scope.currentContact = {
@@ -121,8 +138,34 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
         return decodeURIComponent(url)
     }
 
-    
-    
+
+    $scope.switchTheme = function () {
+        var color = $scope.theme['themeColor'];
+
+        if ($scope.theme['themeColor'] === 'red') {
+            color='blue'
+        }
+        if ($scope.theme['themeColor'] === 'blue') {
+            color='red'
+        }
+
+        $scope.theme = {headerColor: 'header-bg-' + color,
+                        iconColor: 'icon-color-' + color,
+                        themeColor: color
+        }
+    }
+
+    $scope.setTheme = function (color) {
+
+
+        $scope.theme = {headerColor: 'header-bg-' + color,
+                        iconColor: 'icon-color-' + color,
+                        themeColor: color
+        }
+    }
+
+
+    $scope.setTheme('blue');
 
     $scope.random = function (array) {
         var m = array.length,
@@ -143,13 +186,19 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
     }
     var w = angular.element($window);
 
-    $scope.stretch = function () {
+    $scope.stretchLeft = function () {
 
-        $scope.scrollbarHeight = w.innerHeight() - $("#contacts").offset().top + 'px'
+        $scope.scrollbarHeightLeft = w.innerHeight() - $("#contacts").offset().top + 'px'
 
     }
 
-    $scope.stretch();
+    $scope.stretchRight = function () {
+
+        $scope.scrollbarHeightRight = w.innerHeight() - $("#contacts").offset().top + 'px'
+
+    }
+
+
 
 
 
@@ -167,7 +216,8 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
 
     w.bind('resize', function () {
         $scope.$apply(function () {
-            $scope.stretch();
+            $scope.stretchLeft();
+            $scope.stretchRight();
         })
     });
 

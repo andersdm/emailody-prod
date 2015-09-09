@@ -4,23 +4,14 @@
     <!-- image here via CSS -->
 </div>
 
-<div class="toolbar" style="/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#5b95a9+0,7db3be+50,78acb9+100 */
-background: #5b95a9; /* Old browsers */
-background: -moz-linear-gradient(left,  #5b95a9 0%, #7db3be 50%, #78acb9 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, right top, color-stop(0%,#5b95a9), color-stop(50%,#7db3be), color-stop(100%,#78acb9)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(left,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(left,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(left,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* IE10+ */
-background: linear-gradient(to right,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', endColorstr='#78acb9',GradientType=1 ); /* IE6-9 */
-">
+<div class="toolbar {{theme.headerColor}}" style="padding-bottom:6px">
+<i class="icon icon--l icon--purple tc-orange-500 icon--flat mdi mdi-weather-sunny" style=" line-height:normal !important" ng-show="theme.themeColor=='blue'"></i>
 
-
-    <i class="icon icon--l icon--purple tc-orange-500 icon--flat mdi mdi-weather-sunny"></i>
-    <span class="toolbar__label fs-headline tc-grey-100  ml" style="font-weight:500; "> Emailody</span>
+    <img ng-src="static/img/logos/logo.png" class="icon icon--l" style="padding-left:10px; padding-top:5px; height:2.2rem;"></img>
+<!--    <span class="toolbar__label fs-headline tc-grey-100  ml" style="font-weight:500; "> Emailody</span>-->
 
 </div>
-</div>
+
 <div class="divider divider--dark"></div>
 
 
@@ -28,57 +19,62 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
     <div flex-item="3" flex-item-order="1" style="box-shadow:0 3px 3px rgba(0, 0, 0, 0.3); position:relative; z-index:1; background-color:#F8F8F8" ng-class="leftWrapper">
-        
+
 
 
             <!--<div class="pl+ pr+ pb+ card stretch" style="background-color:#F8F8F8; position:relative; z-index:1;">-->
                 <div class="toolbar bgc-grey-100" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.12), 0 2px 0px 0 rgba(0, 0, 0, 0.0)">
 
+<button class="btn btn--s btn--grey btn--icon mr ml" lx-ripple>
+                        <i class="icon icon--s icon--flat mdi mdi-folder {{theme.iconColor}}"></i>
+                    </button>
 
-
-                    <button class="btn btn--s btn--blue btn--icon mr+ ml" lx-ripple>
-                        <i class="icon icon--s icon--grey tc-light-blue-200 icon--flat mdi mdi-folder"></i>
+                    <button class="btn btn--s btn--grey btn--icon mr ml" lx-ripple>
+                        <i class="icon icon--s icon--flat mdi mdi-pen {{theme.iconColor}}" ng-click="changeRight('writeMail');"></i>
                     </button>
 
 
 
-                    <button class="btn btn--s btn--blue btn--icon mr" lx-ripple>
-                        <i class="icon icon--s icon--grey tc-light-blue-200 icon--flat mdi mdi-pen" ng-click="changeRight('writeMail');"></i>
+                    <button class="btn btn--s btn--grey btn--icon " lx-ripple>
+                        <i class="icon icon--s icon--flat mdi mdi-magnify {{theme.iconColor}}"></i>
                     </button>
-                    <button class="btn btn--s btn--blue btn--icon mr " lx-ripple>
-                        <i class="icon icon--s icon--grey tc-light-blue-200 icon--flat mdi mdi-magnify"></i>
-                    </button>
+
+<!--<button class="btn btn--s btn--grey btn--icon mr ml" lx-ripple>
+                        <i class="icon icon--s icon--flat mdi mdi-palette {{theme.iconColor}}" ng-click="switchTheme('blue')"></i>
+                    </button>-->
 
 
                 </div>
                 <!--<div ng-scrollbars ng-scrollbars-config="ngScrollbarsConfig" class="container pr+ pl" style="height:{{stretch()}}">-->
-                <div id="contacts" class="pr+ pl pt" style="height:{{scrollbarHeight}}; overflow:auto;">
+                <div id="contacts" class="pt ml pr" style="height:{{scrollbarHeightLeft}}; max-height:{{scrollbarHeightLeft}};" lx-scrollbar>
                 <ul class="list">
-                    <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="getMessages(contact.id, 0, contact.name, contact.address); ">
+                    <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="getMessages(contact.id, 0, contact.name, contact.address, contact.initial); ">
                         <div class="list-row__primary">
-                            <img gravatar-src="contact.address;" class="img-round img-round-l">
+                            <!--<div class="contact-image initial-image img-round-m"><i class="icon icon--m icon--flat mdi mdi-account"></i></div>-->
+                            <img gravatar-src="contact.address;" class="contact-image img-round img-round-m gravatar-image" ng-class="{ 'unread-avatar': contact.unread }" style="opacity:0.6">
+
                             <!--<i class="icon icon--l icon--grey bgc-grey-400 icon--circled mdi mdi-account" ng-hide="contact.gravatarHash" style="width:48px; height:48px; font-size:32px; padding-top:5px; color:#F8F8F8"></i>
 -->
                         </div>
 
                         <div class="list-row__content">
-                            <span class="display-block fs-title-1">{{contact.name}}</span>
-                            <span class="display-block fs-body-1 tc-black-2">{{contact.snippet}} </span>
-                            <span class="display-block tc-light-blue-200 fs-body-1" style="line-height:1.2rem; font-size:0.694rem !important">{{contact.date}}</span>
+                            <span class="display-block fs-title-1" ng-class="{ 'unread': contact.unread }">{{contact.name}}</span>
+                            <span class="display-block fs-body-1  tc-black-2">{{contact.snippet}} </span>
+                            <span class="display-block fs-body-1  tc-black-2" style=" font-size:0.694rem !important">{{contact.date}}</span>
                         </div>
 
-                        <!--<div class="list-row__secondary">
-                            <i class="icon icon--xs icon--grey icon--flat mdi mdi-information"></i>
-                        </div>-->
+                        <div class="list-row__secondary">
+                            <i class="icon icon--s icon--grey icon--flat mdi mdi-star-outline"></i>
+                        </div>
                     </li>
 
                 </ul>
-                
+
                 <div class="p++ white" style="text-align:center;">
 
                     <div class="divider divider--dark"></div>
 
-                    <button class="btn btn--m btn--grey tc-light-blue-200 btn--flat m++" lx-ripple>More <i class="mdi mdi-chevron-double-down"></i>
+                    <button class="btn btn--m btn--grey tc-light-blue-200 btn--flat" ng-click="getContacts(pageNr)" lx-ripple>More <i class="mdi mdi-chevron-double-down"></i>
                     </button>
 
                 </div>
@@ -90,56 +86,64 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 		<div ng-switch="rightShow">
             <div ng-switch-when="listMails">
                 <div class="toolbar" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.12), 0 2px 0px 0 rgba(0, 0, 0, 0.0);">
-                    <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" ng-hide="currentContact.name">Choose a contact to the left</span>
-					<button class="btn btn--s btn--blue btn--icon ml+ mr+ hiddenDesktop" lx-ripple ng-show="currentContact.name" ng-click="mobileBack()">
-                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-backburger"></i>
-                    </button>
-                    
-                    <span class="fs-toolbar-title tc-light-blue-200 pr+ pl+" style="border-right:1px solid #68A0B0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis" ng-show="currentContact.name">{{currentContact.name}}</span>
-                    <button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name">
-                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-attachment"></i>
+                    <span class="fs-toolbar-title tc-light-blue-200 pr+ pl" style="color: grey !important" ng-hide="currentContact.name">Choose a contact to the left</span>
+					<button class="btn btn--s btn--grey btn--icon ml hiddenDesktop" lx-ripple ng-show="currentContact.name" ng-click="mobileBack()">
+                        <i class="icon icon--s icon--flat mdi mdi-backburger {{theme.iconColor}}"></i>
                     </button>
 
-                    <button class="btn btn--s btn--blue btn--icon mr+" lx-ripple ng-show="currentContact.name">
-                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-pen"></i>
+                    <button class="btn btn--s btn--grey btn--icon mr ml" lx-ripple ng-show="currentContact.name">
+                        <i class="icon icon--s icon--flat mdi mdi-magnify {{theme.iconColor}}"></i>
                     </button>
-                    <button class="btn btn--s btn--blue btn--icon mr+" lx-ripple ng-show="currentContact.name">
 
-                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-delete mr+"></i>
+                    <button class="btn btn--s btn--grey btn--icon mr" lx-ripple ng-show="currentContact.name">
+                        <i class="icon icon--s icon--flat mdi mdi-pen {{theme.iconColor}}"></i>
                     </button>
-                    <div style="clear:both"></div>
+
+                    <button class="btn btn--s btn--grey btn--icon mr" lx-ripple ng-show="currentContact.name">
+
+                        <i class="icon icon--s icon--flat mdi mdi-folder-move mr+ {{theme.iconColor}}"></i>
+                    </button>
+                    <button class="btn btn--s btn--grey btn--icon mr" lx-ripple ng-show="currentContact.name">
+
+                        <i class="icon icon--s  icon--flat mdi mdi-delete mr+ {{theme.iconColor}}"></i>
+                    </button>
+                    <span class="fs-toolbar-title tc-light-blue-200 pl+" style="border-left:1px solid lightgrey; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: grey !important"ng-show="currentContact.name">{{currentContact.name}}</span>
 
 
                 </div>
 
 		        <!--<div ng-scrollbars ng-scrollbars-config="ngScrollbarsConfig" class="container pr+ pl pt mb mt" style="height:{{stretch()}}">-->
-                <div class="pr+ pl pt" style="height:{{scrollbarHeight}}; overflow:auto">
+                <div class="pr+ pl+ pt" style="height:{{scrollbarHeightRight}}; max-height:{{scrollbarHeightRight}};" lx-scrollbar>
                 <ul class="list">
                     <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator my-repeat-animation" lx-ripple="grey-400">
-                        <div ng-hide="message.sent" class="list-row__primary" ng-click="currentMessage.subject=message.subject; currentMessage.date=message.date; currentMessage.sent=message.sent; changeRight('readMail');">
+                        <!--<div ng-hide="message.sent" class="list-row__primary" ng-click="currentMessage.subject=message.subject; currentMessage.date=message.date; currentMessage.sent=message.sent; changeRight('readMail');">-->
 
-                            <img gravatar-src="currentContact.address" class="img-round img-round-m">
-                            
+                            <!--<div class="contact-image initial-image img-round-m"><i class="icon icon--m  icon--flat mdi mdi-account"></i></div>-->
+                            <!--<img gravatar-src="message.address;" class="contact-image img-round img-round-m gravatar-image" ng-class="{ 'unread-avatar': message.unread }" style="opacity:0.6">
+
 
                         </div>
 
                         <div ng-show="message.sent" class="list-row__primary" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject;  currentMessage.date=message.date;  currentMessage.sent=message.sent; changeRight('readMail'); ">
+                            <div class="contact-image initial-image img-round-m">
+                                <i class="icon icon--m icon--grey mdi mdi-send" style="font-size:1.728rem; line-height: 2.3rem; padding-left:0.2rem; color:#ABB9CB"></i>
+                            </div>
 
 
-                            <i class="icon icon--m icon--grey bgc-grey-300 icon--circled mdi mdi-send"></i>
 
                         </div>
-
+-->
                         <div class="list-row__content" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; changeRight('readMail'); ">
-                            <span class="display-block" style="font-size:0.833rem">{{message.subject}} <span class="tc-light-blue-200" style="font-size:0.694rem"> 9:52 PM.</span> </span>
+                            <span class="display-block fs-title-1 fs-subject-1" ng-class="{ 'unread': message.unread }">{{message.subject}} </span>
                             <span class="display-block fs-body-1 tc-black-2">{{message.snippet}}</span>
+                            <span class="fs-body-1 tc-light-blue-200"> {{message.date}}</span>
 
                         </div>
 
                         <div class="list-row__secondary">
                             <div class="checkbox checkbox--standalone">
-                                <input type="checkbox" id="checkbox1" class="checkbox__input">
-                                <label for="checkbox1" class="checkbox__label tc-grey-500"></label>
+                                <input type="checkbox" id="checkbox{{$index}}" class="checkbox__input">
+                                <label for="checkbox{{$index}}" class="checkbox__label tc-grey-500"></label>
                             </div>
                         </div>
                     </li>
@@ -149,62 +153,70 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
                     <div class="divider divider--dark"></div>
 
-                    <button class="btn btn--m btn--grey tc-light-blue-200 btn--flat m++" lx-ripple ng-click="chats2=chats; chats.concat(chats2)">More <i class="mdi mdi-chevron-double-down"></i>
+                    <button class="btn btn--m btn--grey tc-light-blue-200 btn--flat" lx-ripple ng-click="chats2=chats; chats.concat(chats2)">More <i class="mdi mdi-chevron-double-down"></i>
                     </button>
 
 
         </div></div></div>
         <div ng-switch-when="readMail">
                     <div class="toolbar" style="box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.12), 0 2px 0px 0 rgba(0, 0, 0, 0.0);">
-					
-					<button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name" ng-click="changeRight('listMails')">
-                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-backburger"></i>
-                    </button>
-                    <span class="fs-toolbar-title tc-light-blue-200 pr+" style="border-right:1px solid #68A0B0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis" ng-show="currentContact.name">{{currentContact.name}}: {{currentMessage.subject}}</span>
-					
-                    <button class="btn btn--s btn--blue btn--icon ml+ mr+" lx-ripple ng-show="currentContact.name">
-                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-reply"></i>
+
+					<button class="btn btn--s btn--grey btn--icon ml mr" lx-ripple ng-show="currentContact.name" ng-click="changeRight('listMails')">
+                        <i class="icon icon--s icon--flat mdi mdi-backburger {{theme.iconColor}}"></i>
                     </button>
 
-                    <button class="btn btn--s btn--blue btn--icon mr+" lx-ripple ng-show="currentContact.name">
-                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-reply-all"></i>
+                    <button class="btn btn--s btn--icon mr" lx-ripple ng-show="currentContact.name">
+                        <i class="icon icon--s  icon--flat mdi mdi-reply-all {{theme.iconColor}}"></i>
                     </button>
-                    
-                    <button class="btn btn--s btn--blue btn--icon mr+" lx-ripple ng-show="currentContact.name">
 
-                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-forward mr+"></i>
+                    <button class="btn btn--s btn--grey btn--icon mr" lx-ripple ng-show="currentContact.name">
+                        <i class="icon icon--s icon--flat mdi mdi-reply {{theme.iconColor}}"></i>
                     </button>
-                    <button class="btn btn--s btn--blue btn--icon mr+" lx-ripple ng-show="currentContact.name">
 
-                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-pen mr+"></i>
-                    </button>
-                    <button class="btn btn--s btn--blue btn--icon mr+" lx-ripple ng-show="currentContact.name">
 
-                        <i class="icon icon--s icon--grey tc-blue-right icon--flat mdi mdi-delete mr+"></i>
+                    <button class="btn btn--s btn--grey btn--icon mr" lx-ripple ng-show="currentContact.name">
+
+                        <i class="icon icon--s flip icon--flat mdi mdi-reply {{theme.iconColor}}"></i>
                     </button>
+
+                    <button class="btn btn--s btn--grey btn--icon mr" lx-ripple ng-show="currentContact.name">
+
+                        <i class="icon icon--s  icon--flat mdi mdi-folder-move mr+ {{theme.iconColor}}"></i>
+                    </button>
+                    <button class="btn btn--s btn--grey btn--icon mr" lx-ripple ng-show="currentContact.name">
+
+                        <i class="icon icon--s  icon--flat mdi mdi-delete mr+ {{theme.iconColor}}"></i>
+                    </button>
+
+                    <button class="btn btn--s btn--grey btn--icon mr" lx-ripple ng-show="currentContact.name">
+
+                        <i class="icon icon--s  icon--flat mdi mdi-information mr+ {{theme.iconColor}}"></i>
+                    </button>
+<span class="fs-toolbar-title tc-light-blue-200 pl+ hiddenMobile" style="border-left:1px solid lightgrey; overflow:hidden; white-space:nowrap; text-overflow:ellipsis" ng-show="currentContact.name">{{currentMessage.subject}}</span>
 
 
 
                 </div>
-		
 
-                    <div ng-bind-html="emailbody" class="pt++ pl++ pr++" style="height:{{scrollbarHeight}}; overflow:auto; margin-top:5px;"></div>
+                <div class="pr+ pl pt" style="height:{{scrollbarHeightLeft}}; max-height:{{scrollbarHeightLeft}};" lx-scrollbar>
+                    <div ng-bind-html="emailbody" class="pt+ pl+ pr+"></div>
             <!--<iframe src="{{emailbody}}" style="width:100%; height:100%; border:0"></iframe>-->
 
 
-                    
+
             </div>
             <div ng-switch-when="writeMail">
+
                     <div class="toolbar  pl++" style="background-color:rgb(248, 248, 248)">
 
                         <span class="toolbar__label tc-light-blue-200 valign ">
-                            
+
                 </span>
                         <div class="toolbar__right">
-                            
+
                         </div>
 
-                
+
 
                     <div class="divider divider--dark"></div>
 
@@ -224,9 +236,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
                     </form>
-                    <button class="btn btn--l btn--blue tc-light-blue-200 btn--flat">Send <i class="mdi tc-light-blue-200 mdi-send"></i>
+                    <button class="btn btn--l btn--grey tc-light-blue-200 btn--flat">Send <i class="mdi tc-light-blue-200 mdi-send"></i>
                     </button>
-                
+
             </div>
 
     </div>
@@ -237,4 +249,4 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 
 
-    
+
