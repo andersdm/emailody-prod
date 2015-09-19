@@ -21,6 +21,6 @@ angular.module('ui.gravatar').config([
   'gravatarServiceProvider', function(gravatarServiceProvider) {
     gravatarServiceProvider.defaults = {
       size     : 100,
-      "default": 'http://www.emailody.com/static/img/avatars/avatar6.png'  // Mystery man as default for missing avatars
+      "default": 'blank' //'http://www.emailody.com/static/img/avatars/avatar6.png'  // Mystery man as default for missing avatars
     };
 }]);

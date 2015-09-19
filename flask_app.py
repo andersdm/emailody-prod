@@ -10,6 +10,7 @@ import json
 import redis
 import base64
 import quopri
+import urllib
 from premailer import transform
 from apiclient import errors
 from flask import Flask, redirect, url_for, Response, render_template, session, request
@@ -92,17 +93,22 @@ def contacts(pagenr):
                     address = From.split()[-1]
                     address = re.sub(r'[<>]', '', address)
                     Address = address.strip()
+                    Domain = Address.split('@')[1]
+                    if Domain == 'facebookmail.com':
+                        Domain = 'facebook.com'
                     Name = From.rsplit(' ', 1)[0]
                     From = From.replace('"', '')
                     Name = Name.replace('"', '')
 
-            if From not in session['seen']:
+
+            if From not in session['seen'] and Address != session['user_address']:
                 Contact = {
                     'id': len(session['seen']),
                     'date': Date,
                     'name': Name,
                     'initial': Name[0].upper(),
                     'address': Address,
+                    'domain': Domain,
                     'snippet': results['snippet'],
                     'unread': Unread,
                     }
@@ -120,7 +126,8 @@ def contacts(pagenr):
         #    query = query + ')'
 
         # query = "\"to:'" + contact + "' AND from:me \" OR from:'" + contact + "'"
-
+        user_id = gmail_service.users().getProfile(userId='me').execute()
+        session['user_address'] = user_id['emailAddress']
         message_ids = gmail_service.users().messages().list(userId='me'
                 , maxResults=50,
                 pageToken=session['contactsNextPageToken']).execute()
@@ -246,6 +253,9 @@ def get_message(msg_id):
 @app.route('/v1/gmail/messages/<int:contactId>', methods=['GET'])
 def get_messages(contactId):
     contact = session['seen'][contactId]
+    contact_address = contact.split()[-1]
+    contact_address = re.sub(r'[<>]', '', contact_address)
+    contact_address = contact_address.strip()
     credentials = client.OAuth2Credentials.from_json(session['credentials'])
     http = credentials.authorize(httplib2.Http(cache='.cache'))
 
@@ -254,17 +264,23 @@ def get_messages(contactId):
     gmail_service = discovery.build('gmail', 'v1', http=http)
 
     def mailscallbackfunc(result, results, moreresults):
-
-        if 'UNREAD' in results['labelIds']:
-            Unread = True
+        if 'labelIds' in results:
+            if 'UNREAD' in results['labelIds']:
+                Unread = True
+            else:
+                Unread = False
         else:
-            Unread = False
+            Unread = None
+
         for header in results['payload']['headers']:
             if header['name'].lower() == 'date':
                 Date = header['value']
             if header['name'].lower() == 'from':
                 From = header['value']
-                if From == 'Anders Damsgaard <andersdm@gmail.com>':  # SKAL ÆNDRES
+                from_address = From.split()[-1]
+                from_address = re.sub(r'[<>]', '', from_address)
+                from_address = from_address.strip()
+                if from_address.lower() == session['user_address']:
                     Sent = True
                 else:
                     Sent = False
@@ -286,11 +302,12 @@ def get_messages(contactId):
 
         session['mails'].append(Contact)
 
-    query = '"to:\'' + contact + '\' AND from:me " OR from:\'' \
-        + contact + "'"
+    query = "(from:me to:" + contact_address + ") OR (from:" + contact + ")"
+    print "#######query############"
+    print query
     message_ids = gmail_service.users().messages().list(userId='me',
-            maxResults=10, labelIds='INBOX', q=query).execute()
-
+            maxResults=10, q=query).execute()
+    #labelIds='INBOX',
     batchMails = BatchHttpRequest(callback=mailscallbackfunc)
 
     for msg_id in message_ids['messages']:

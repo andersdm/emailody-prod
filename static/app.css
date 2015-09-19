@@ -5,7 +5,7 @@ html {
             font-size:16px;
         }
 
-.date {font-size:0.694rem !important; padding-bottom:0.07rem;}
+.date {font-size:0.702rem !important; /*padding-bottom:0.07rem;*/}
 
 .unread-avatar {
     opacity:0.6 !important;
@@ -65,7 +65,7 @@ button {
 }
 
 .list-row__primary {
-    opacity:0.6;
+    opacity:0.8;
 }
 
 .list-row {
@@ -213,7 +213,7 @@ li {
 }
 
 .fs-subject-1 {
-    font-size:0.833rem !important;
+    font-size:0.889rem !important;
 }
 
 .tc-light-blue-200 {
@@ -248,6 +248,7 @@ textarea {
 .fs-body-1 {
 /*font-size: 0.833rem !important;*/
 color:black;
+font-size:0.9rem !important;
 /*line-height:1.2rem !important;*/
 
 }
@@ -257,7 +258,7 @@ font-size: 1rem;
     color: #5F98AC !important;
     text-transform:capitalize;
     letter-spacing: 0.02rem;
-    line-height:normal !important;
+    /*line-height:normal !important;*/
 
 
 }
@@ -327,13 +328,19 @@ display:none;
 .img-round-l {
     width:2.986rem;
     height:2.986rem;
-    border-color:#7FB9CE;
+
 }
 
 .img-round-m {
     width:2.488rem;
     height:2.488rem;
-        border-color:#bdc3c7C;
+
+}
+
+.img-round-s {
+    width:1.728rem;
+    height:1.728rem;
+
 }
 
 .list-primary-tile, .list-row__primary {
@@ -341,7 +348,7 @@ display:none;
 }
 
 .display-block {
-    white-space: pre-wrap;
+    white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }

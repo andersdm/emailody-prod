@@ -20,17 +20,21 @@
         </div>
         <div id="contacts" class="pt ml pr" style="height:{{scrollbarHeightLeft}}; max-height:{{scrollbarHeightLeft}}; overflow:auto">
             <ul class="list">
-                <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400" ng-click="getMessages(contact.id, 0, contact.name, contact.address, contact.initial); ">
-                    <div class="list-row__primary">
-                        <img src="https://logo.clearbit.com/hotmail.com" onerror='this.gravatar-src="contact.address;"' class="contact-image img-round img-round-m gravatar-image">
+                <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400">
+                    <div class="list-row__primary" ng-click="getMessages(contact.id, 0, contact.name, contact.address, contact.domain);">
+                        <img ng-src="https://logo.clearbit.com/{{contact.domain}}" class="contact-image img-round img-round-m gravatar-image" onerror="this.src='http://www.emailody.com/static/img/avatars/avatar11.png'">
+                        <img  gravatar-src="contact.address;" class="contact-image img-round img-round-m gravatar-image">
                     </div>
-                    <div class="list-row__content">
+                    <div class="list-row__content" ng-click="getMessages(contact.id, 0, contact.name, contact.address, contact.domain);">
                         <span class="display-block fs-title-1" ng-class="{ 'unread': contact.unread }">{{contact.name}}</span>
-                        <span class="display-block fs-body-1  tc-black-2 date">{{contact.date}}</span>
                         <span class="display-block fs-body-1  tc-black-2">{{contact.snippet}} </span>
+                        <span class="display-block fs-body-1  tc-black-2 date" style="font-size:0.75rem !important;">{{contact.date}}</span>
                     </div>
                     <div class="list-row__secondary">
-                        <i class="icon icon--s icon--grey icon--flat mdi mdi-star-outline"></i>
+                        <div class="checkbox checkbox--standalone">
+                            <input type="checkbox" id="checkbox{{$index}}" class="checkbox__input">
+                            <label for="checkbox{{$index}}" class="checkbox__label tc-grey-500"></label>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -62,15 +66,23 @@
                     <button class="btn btn--s btn--grey btn--icon mr" lx-ripple ng-show="currentContact.name">
                         <i class="icon icon--s  icon--flat mdi mdi-delete mr+ icon-color-blue"></i>
                     </button>
-                    <span class="fs-toolbar-title tc-light-blue-200 pl+ left-border" ng-show="currentContact.name">{{currentContact.name}}</span>
+                    <span class="fs-toolbar-title tc-light-blue-200 pl left-border pr++" ng-show="currentContact.name">
+                        {{currentContact.name}}
+                    </span>
+
                 </div>
-                <div class="pr+ pl+ pt" style="height:{{scrollbarHeightRight}}; max-height:{{scrollbarHeightRight}}; overflow:auto">
+                <div class="ml pt" style="height:{{scrollbarHeightRight}}; max-height:{{scrollbarHeightRight}}; overflow:auto">
                     <ul class="list">
                         <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator my-repeat-animation" lx-ripple="grey-400">
+                            <div class="list-row__primary" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; changeRight('readMail');" style="opacity:0.5">
+                                <img ng-hide="message.sent" ng-src="https://logo.clearbit.com/{{currentContact.domain}}" class="contact-image img-round img-round-m gravatar-image" onerror="this.src='http://www.emailody.com/static/img/avatars/avatar11.png'">
+                                <img ng-hide="message.sent" gravatar-src="currentContact.address;" class="contact-image img-round img-round-m gravatar-image">
+                                <i ng-show="message.sent" class="icon icon--m  icon--flat mdi mdi-send mr+ icon-color-blue"></i>
+                            </div>
                             <div class="list-row__content" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; changeRight('readMail'); ">
                                 <span class="display-block fs-title-1 fs-subject-1" ng-class="{ 'unread': message.unread }">{{message.subject}} </span>
                                 <span class="display-block fs-body-1 tc-black-2">{{message.snippet}}</span>
-                                <span class="fs-body-1 tc-light-blue-200"> {{message.date}}</span>
+                                <span class="fs-body-1 tc-light-blue-200" style="font-size:0.75rem !important;"> {{message.date}}</span>
                             </div>
                             <div class="list-row__secondary">
                                 <div class="checkbox checkbox--standalone">

@@ -49,7 +49,6 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
             console.log($scope.contacts)
             $scope.page = {
                 dataLoaded: true
-
             };
             $scope.stretchLeft();
             $scope.pages['contactsPage'] = $scope.pages['contactsPage'] + 1
@@ -72,13 +71,13 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
         })
     };
 
-    $scope.getMessages = function (id, pagenr, name, address, initial) {
+    $scope.getMessages = function (id, pagenr, name, address, domain) {
         $scope.messages = $scope.messageslist[id];
         $scope.rightShow = 'listMails';
         $scope.currentContact = {
             name: name,
             address: address,
-            initial: initial
+            domain: domain
         };
         $timeout(function () {
             $scope.leftWrapper = 'hiddenMobile';
