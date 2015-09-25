@@ -1,4 +1,7 @@
 
+.default-avatar {
+    background-image: url("static/img/avatars/avatar11.png");
+}
 html {
             font-family: 'Open Sans', Verdana, Geneva, Tahoma, Arial, Helvetica, sans-serif;
             color: darkslategrey;
@@ -14,19 +17,19 @@ html {
 .left-side {
     box-shadow:0 3px 3px rgba(0, 0, 0, 0.3);
     position:relative; z-index:1;
-    background-color:#F8F8F8
+    /*background-color:#F8F8F8*/
 }
 
 .header-bg-blue {
-background: #5b95a9; /* Old browsers */
-background: -moz-linear-gradient(left,  #5b95a9 0%, #7db3be 50%, #78acb9 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, right top, color-stop(0%,#5b95a9), color-stop(50%,#7db3be), color-stop(100%,#78acb9)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(left,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(left,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(left,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* IE10+ */
-background: linear-gradient(to right,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', endColorstr='#78acb9',GradientType=1 ); /* IE6-9 */
-
+/*background: #5b95a9; /* Old browsers */
+/*background: -moz-linear-gradient(left,  #5b95a9 0%, #7db3be 50%, #78acb9 100%); /* FF3.6+ */
+/*background: -webkit-gradient(linear, left top, right top, color-stop(0%,#5b95a9), color-stop(50%,#7db3be), color-stop(100%,#78acb9)); /* Chrome,Safari4+ */
+/*background: -webkit-linear-gradient(left,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* Chrome10+,Safari5.1+ */
+/*background: -o-linear-gradient(left,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* Opera 11.10+ */
+/*background: -ms-linear-gradient(left,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* IE10+ */
+/*background: linear-gradient(to right,  #5b95a9 0%,#7db3be 50%,#78acb9 100%); /* W3C */
+/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', endColorstr='#78acb9',GradientType=1 ); /* IE6-9 */
+background-color:#3693b5;
 } /* Used */
 
 .logo {
@@ -35,7 +38,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b95a9', end
 
 .icon-color-blue {
     /*color:#D26C66!important*/
-    color: #5F98AC !important;
+    /*color: #5F98AC !important;*/
+    color:#3693b5;
 
 }
 
@@ -255,7 +259,7 @@ font-size:0.9rem !important;
 
 .fs-title-1 {
 font-size: 1rem;
-    color: #5F98AC !important;
+    /*color: #5F98AC !important;*/
     text-transform:capitalize;
     letter-spacing: 0.02rem;
     /*line-height:normal !important;*/

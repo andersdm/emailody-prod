@@ -2,9 +2,15 @@
     <!-- image here via CSS -->
 </div>
 <div class="toolbar header-bg-blue">
-    <img ng-src="static/img/logos/logo.png" class="logo"></img>
+    <span class="toolbar__label fs-title"><img ng-src="static/img/logos/logo.png" class="logo"></img></span>
+
+        <div class="toolbar__right">
+<i class="icon icon--s icon--flat mdi mdi-settings mr" style="color:#F5F5F5;"></i>
+<i class="icon icon--s icon--flat mdi mdi-close" style="color:#F5F5F5;"></i>
+
 </div>
-<div class="divider divider--dark"></div>
+<div id="progress"></div>
+</div>
 <div class="" flex-container="row">
     <div flex-item="3" flex-item-order="1" class="left-side" ng-class="leftWrapper">
         <div class="toolbar bgc-grey-100">
@@ -18,12 +24,19 @@
                 <i class="icon icon--s icon--flat mdi mdi-magnify icon-color-blue"></i>
             </button>
         </div>
+
         <div id="contacts" class="pt ml pr" style="height:{{scrollbarHeightLeft}}; max-height:{{scrollbarHeightLeft}}; overflow:auto">
+
+
+
             <ul class="list">
                 <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400">
+
                     <div class="list-row__primary" ng-click="getMessages(contact.id, 0, contact.name, contact.address, contact.domain);">
-                        <img ng-src="https://logo.clearbit.com/{{contact.domain}}" class="contact-image img-round img-round-m gravatar-image" onerror="this.src='http://www.emailody.com/static/img/avatars/avatar11.png'">
+                        <img ng-src="static/img/avatars/avatar12.png" class="contact-image img-round img-round-m gravatar-image">
+                        <img ng-src="https://logo.clearbit.com/{{contact.domain}}" class="contact-image img-round img-round-m gravatar-image" onerror="this.src='static/img/avatars/blank.png'">
                         <img  gravatar-src="contact.address;" class="contact-image img-round img-round-m gravatar-image">
+
                     </div>
                     <div class="list-row__content" ng-click="getMessages(contact.id, 0, contact.name, contact.address, contact.domain);">
                         <span class="display-block fs-title-1" ng-class="{ 'unread': contact.unread }">{{contact.name}}</span>
@@ -49,7 +62,7 @@
     <div class="scroll-wrapper" flex-item="" flex-item-order="2" ng-class="rightWrapper">
         <div ng-switch="rightShow">
             <div ng-switch-when="listMails">
-                <div class="toolbar">
+                <div class="toolbar bgc-grey-100">
                     <span class="fs-toolbar-title tc-light-blue-200 pr+ pl" ng-hide="currentContact.name">Choose a contact to the left</span>
                     <button class="btn btn--s btn--grey btn--icon ml hiddenDesktop" lx-ripple ng-show="currentContact.name" ng-click="mobileBack()">
                         <i class="icon icon--s icon--flat mdi mdi-backburger icon-color-blue"></i>
@@ -75,7 +88,8 @@
                     <ul class="list">
                         <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator my-repeat-animation" lx-ripple="grey-400">
                             <div class="list-row__primary" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; changeRight('readMail');" style="opacity:0.5">
-                                <img ng-hide="message.sent" ng-src="https://logo.clearbit.com/{{currentContact.domain}}" class="contact-image img-round img-round-m gravatar-image" onerror="this.src='http://www.emailody.com/static/img/avatars/avatar11.png'">
+                                <img ng-hide="message.sent" ng-src="static/img/avatars/avatar12.png" class="contact-image img-round img-round-m gravatar-image">
+                                <img ng-hide="message.sent" ng-src="https://logo.clearbit.com/{{currentContact.domain}}" class="contact-image img-round img-round-m gravatar-image" onerror="this.src='http://www.emailody.com/static/img/avatars/blank.png'">
                                 <img ng-hide="message.sent" gravatar-src="currentContact.address;" class="contact-image img-round img-round-m gravatar-image">
                                 <i ng-show="message.sent" class="icon icon--m  icon--flat mdi mdi-send mr+ icon-color-blue"></i>
                             </div>
@@ -100,7 +114,7 @@
                 </div>
             </div>
             <div ng-switch-when="readMail">
-                <div class="toolbar">
+                <div class="toolbar bgc-grey-100">
                     <button class="btn btn--s btn--grey btn--icon ml mr" lx-ripple ng-show="currentContact.name" ng-click="changeRight('listMails')">
                         <i class="icon icon--s icon--flat mdi mdi-backburger icon-color-blue"></i>
                     </button>

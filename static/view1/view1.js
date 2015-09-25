@@ -9,7 +9,7 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
     });
 }])
 
-.controller('View1Ctrl', function ($scope, $http, $resource, $sce, $window, $timeout, $base64, LxNotificationService, LxDialogService) {
+.controller('View1Ctrl', function ($scope, $http, $resource, $sce, $window, $timeout, $base64, LxNotificationService, LxDialogService, LxProgressService) {
 
     // Load resources
 
@@ -18,6 +18,16 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
     var message = $resource("v1/gmail/message/:id");
 
     // Set variables
+
+    $scope.showLinearProgress = function()
+    {
+        LxProgressService.linear.show('#5fa2db', '#progress');
+    };
+
+    $scope.hideLinearProgress = function()
+    {
+        LxProgressService.linear.hide();
+    };
 
     var w = angular.element($window);
     $scope.contacts = []
@@ -42,14 +52,15 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
     // Define functions
 
     $scope.getContacts = function (pageNr) {
+
         contacts.get({
             id: pageNr
         }).$promise.then(function (data) {
             $scope.contacts = $scope.contacts.concat(data['contacts'])
-            console.log($scope.contacts)
             $scope.page = {
                 dataLoaded: true
             };
+            $scope.hideLinearProgress()
             $scope.stretchLeft();
             $scope.pages['contactsPage'] = $scope.pages['contactsPage'] + 1
             var i
@@ -65,10 +76,13 @@ angular.module('myApp.view1', ['ngRoute', 'base64', 'ngResource'])
     }
 
     $scope.getMessage = function (msgId) {
+        $scope.showLinearProgress();
         $http.get('/v1/gmail/message/' + msgId).
         success(function (data) {
             $scope.emailbody = $sce.trustAsHtml(data);
+            $scope.hideLinearProgress();
         })
+
     };
 
     $scope.getMessages = function (id, pagenr, name, address, domain) {
