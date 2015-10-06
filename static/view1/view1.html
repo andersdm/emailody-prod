@@ -2,12 +2,14 @@
     <!-- image here via CSS -->
 </div>
 <div class="toolbar header-bg-blue">
-    <span class="toolbar__label fs-title"><img ng-src="static/img/logos/logo.png" class="logo"></img></span>
-
+    <span class="toolbar__label fs-title" style="opacity:0.9"><img ng-src="static/img/logos/logo2.png" class="logo"></img> </span>
         <div class="toolbar__right">
-<i class="icon icon--s icon--flat mdi mdi-settings mr" style="color:#F5F5F5;"></i>
-<i class="icon icon--s icon--flat mdi mdi-close" style="color:#F5F5F5;"></i>
-
+            <button class="btn btn--l btn--white btn--icon" lx-ripple>
+                <i class="mdi mdi-settings"></i>
+            </button>
+        <button class="btn btn--l btn--white btn--icon" lx-ripple>
+            <i class="mdi mdi-close"></i>
+        </button>
 </div>
 <div id="progress"></div>
 </div>
@@ -18,14 +20,14 @@
                 <i class="icon icon--s icon--flat mdi mdi-folder icon-color-blue"></i>
             </button>
             <button class="btn btn--s btn--grey btn--icon mr ml" lx-ripple>
-                <i class="icon icon--s icon--flat mdi mdi-pen icon-color-blue" ng-click="changeRight('writeMail');"></i>
+                <i class="icon icon--sicon--flat mdi mdi-pen icon-color-blue" ng-click="changeRight('writeMail');"></i>
             </button>
             <button class="btn btn--s btn--grey btn--icon " lx-ripple>
                 <i class="icon icon--s icon--flat mdi mdi-magnify icon-color-blue"></i>
             </button>
         </div>
 
-        <div id="contacts" class="pt ml pr" style="height:{{scrollbarHeightLeft}}; max-height:{{scrollbarHeightLeft}}; overflow:auto">
+        <div id="contacts" class="pt pr pl" style="height:{{scrollbarHeightLeft}}; max-height:{{scrollbarHeightLeft}}; overflow:auto">
 
 
 
@@ -33,15 +35,15 @@
                 <li ng-repeat="contact in contacts" class="list-row list-row--multi-line list-row--has-separator" lx-ripple="grey-400">
 
                     <div class="list-row__primary" ng-click="getMessages(contact.id, 0, contact.name, contact.address, contact.domain);">
-                        <img ng-src="static/img/avatars/avatar12.png" class="contact-image img-round img-round-m gravatar-image">
-                        <img ng-src="https://logo.clearbit.com/{{contact.domain}}" class="contact-image img-round img-round-m gravatar-image" onerror="this.src='static/img/avatars/blank.png'">
+                        <!--<img ng-src="static/img/avatars/avatar12.png" class="contact-image img-round img-round-m gravatar-image">-->
+                        <img ng-src="https://logo.clearbit.com/{{contact.domain}}" class="contact-image img-round img-round-m gravatar-image" onerror="this.src='static/img/avatars/avatar14.png'">
                         <img  gravatar-src="contact.address;" class="contact-image img-round img-round-m gravatar-image">
 
                     </div>
                     <div class="list-row__content" ng-click="getMessages(contact.id, 0, contact.name, contact.address, contact.domain);">
                         <span class="display-block fs-title-1" ng-class="{ 'unread': contact.unread }">{{contact.name}}</span>
                         <span class="display-block fs-body-1  tc-black-2">{{contact.snippet}} </span>
-                        <span class="display-block fs-body-1  tc-black-2 date" style="font-size:0.75rem !important;">{{contact.date}}</span>
+                        <span class="display-block fs-body-1  tc-black-2 date" style="font-size:0.75rem !important;">{{contact.date | date:'medium'}}</span>
                     </div>
                     <div class="list-row__secondary">
                         <div class="checkbox checkbox--standalone">
@@ -53,7 +55,7 @@
             </ul>
             <div class="p++ white" style="text-align:center;">
                 <div class="divider divider--dark"></div>
-                <button class="btn btn--m btn--grey tc-light-blue-200 btn--flat" ng-click="getContacts(pages.contactsPage);" lx-ripple>More
+                <button class="btn btn--m  btn--flat" ng-click="getContacts(pages.contactsPage);" lx-ripple>More
                     <i class="mdi mdi-chevron-double-down"></i>
                 </button>
             </div>
@@ -87,16 +89,16 @@
                 <div class="ml pt" style="height:{{scrollbarHeightRight}}; max-height:{{scrollbarHeightRight}}; overflow:auto">
                     <ul class="list">
                         <li ng-repeat="message in messages" class="list-row list-row--multi-line list-row--has-separator my-repeat-animation" lx-ripple="grey-400">
-                            <div class="list-row__primary" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; changeRight('readMail');" style="opacity:0.5">
-                                <img ng-hide="message.sent" ng-src="static/img/avatars/avatar12.png" class="contact-image img-round img-round-m gravatar-image">
-                                <img ng-hide="message.sent" ng-src="https://logo.clearbit.com/{{currentContact.domain}}" class="contact-image img-round img-round-m gravatar-image" onerror="this.src='http://www.emailody.com/static/img/avatars/blank.png'">
+                            <div class="list-row__primary" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; changeRight('readMail');">
+                                <!--<img ng-hide="message.sent" ng-src="static/img/avatars/avatar12.png" class="contact-image img-round img-round-m gravatar-image">-->
+                                <img ng-hide="message.sent" ng-src="https://logo.clearbit.com/{{currentContact.domain}}" class="contact-image img-round img-round-m gravatar-image" onerror="this.src='static/img/avatars/avatar14.png'">
                                 <img ng-hide="message.sent" gravatar-src="currentContact.address;" class="contact-image img-round img-round-m gravatar-image">
                                 <i ng-show="message.sent" class="icon icon--m  icon--flat mdi mdi-send mr+ icon-color-blue"></i>
                             </div>
                             <div class="list-row__content" ng-click="getMessage(message.messageId); currentMessage.subject=message.subject; currentMessage.date=message.date;  currentMessage.sent=message.sent; changeRight('readMail'); ">
                                 <span class="display-block fs-title-1 fs-subject-1" ng-class="{ 'unread': message.unread }">{{message.subject}} </span>
                                 <span class="display-block fs-body-1 tc-black-2">{{message.snippet}}</span>
-                                <span class="fs-body-1 tc-light-blue-200" style="font-size:0.75rem !important;"> {{message.date}}</span>
+                                <span class="fs-body-1 tc-black-2" style="font-size:0.75rem !important;">{{message.date | date:'medium'}}</span>
                             </div>
                             <div class="list-row__secondary">
                                 <div class="checkbox checkbox--standalone">
@@ -147,4 +149,16 @@
             </div>
         </div>
     </div>
+    <!--<div class="fab">
+        <button class="fab__primary btn btn--xl btn--blue btn--fab" lx-ripple lx-tooltip="Lorem Ipsum" tooltip-position="left">
+            <i class="mdi mdi-menu"></i>
+            <i class="mdi mdi-plus"></i>
+        </button>
+
+        <div class="fab__actions fab__actions--up">
+            <button class="btn btn--l btn--black btn--fab" lx-ripple lx-tooltip="Lorem Ipsum" tooltip-position="left"><i class="mdi mdi-delete"></i></button>
+            <button class="btn btn--l btn--black btn--fab" lx-ripple lx-tooltip="Lorem Ipsum" tooltip-position="left"><i class="mdi mdi-package"></i></button>
+            <button class="btn btn--l btn--black btn--fab" lx-ripple lx-tooltip="Lorem Ipsum" tooltip-position="left"><i class="mdi mdi-pencil"></i></button>
+        </div>
+    </div>-->
 </div>

@@ -9,8 +9,7 @@ import re
 import json
 import redis
 import base64
-import quopri
-import urllib
+import datetime
 from premailer import transform
 from apiclient import errors
 from flask import Flask, redirect, url_for, Response, render_template, session, request
@@ -20,6 +19,7 @@ from oauth2client import client
 from flask_kvsession import KVSessionExtension
 from simplekv.memory.redisstore import RedisStore
 from fixbadunicode import fix_bad_unicode
+from inlinestyler.utils import inline_css
 redis_url = 'redis://rediscloud:u1ODHW41noA8sqMG@pub-redis-16921.us-east-1-4.6.ec2.redislabs.com:16921'
 conn = redis.StrictRedis.from_url(redis_url)
 store = RedisStore(conn)
@@ -86,8 +86,6 @@ def contacts(pagenr):
             else:
                 Unread = False
             for header in results['payload']['headers']:
-                if header['name'].lower() == 'date':
-                    Date = header['value']
                 if header['name'].lower() == 'from':
                     From = header['value']
                     address = From.split()[-1]
@@ -100,11 +98,10 @@ def contacts(pagenr):
                     From = From.replace('"', '')
                     Name = Name.replace('"', '')
 
-
             if From not in session['seen'] and Address != session['user_address']:
                 Contact = {
                     'id': len(session['seen']),
-                    'date': Date,
+                    'date': results['internalDate'],
                     'name': Name,
                     'initial': Name[0].upper(),
                     'address': Address,
@@ -200,19 +197,16 @@ def get_message(msg_id):
                                 if header['name'] == 'Content-Type':
                                     charset = header['value'].rpartition('charset=')[2]
                                     charset = re.sub('"', '', charset, flags=re.DOTALL)
-                                if header['name'] == 'Content-Transfer-Encoding':
-                                    transferencoding = header['value']
-
             msg_str = base64.urlsafe_b64decode((message_body['data']).encode('ascii'))
 #            msg_str = msg_str.encode('utf-8')
             msg_str = '<pre>' + msg_str + '</pre>'
 
-        print transferencoding
+        #print transferencoding
         #if transferencoding == 'quoted-printable':
         #    print "YEEEEEEEEP"
         #    msg_str = quopri.decodestring(msg_str)
         #if charset != 'UTF-8':
-        print charset
+        #print charset
         #msg_str = msg_str.decode(charset, errors='ignore')
         msg_str = unicode(msg_str)
         msg_str = fix_bad_unicode(msg_str)
@@ -225,7 +219,10 @@ def get_message(msg_id):
 
         msg_str = re.sub('!important', '', msg_str, flags=re.DOTALL)
 
-        transformed_msg = transform(msg_str)
+        try:
+            transformed_msg = inline_css(msg_str)
+        except:
+            transformed_msg = msg_str #FIX mig
 
         clean_msg = re.sub('<html>', '', transformed_msg,
                            flags=re.DOTALL)
@@ -273,8 +270,8 @@ def get_messages(contactId):
             Unread = None
 
         for header in results['payload']['headers']:
-            if header['name'].lower() == 'date':
-                Date = header['value']
+            #if header['name'].lower() == 'date':
+            #    Date = header['value']
             if header['name'].lower() == 'from':
                 From = header['value']
                 from_address = From.split()[-1]
@@ -286,14 +283,18 @@ def get_messages(contactId):
                     Sent = False
             if header['name'].lower() == 'subject':
                 Subject = header['value']
+            #timestamp = int(results['internalDate']) / 1000
+            #Date = datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
         try:
             Subject # does a exist in the current namespace
         except NameError:
             Subject = 'Unknown Subject' # nope
 
+        #print(value.strftime('%Y-%m-%d %H:%M:%S'))
+
         Contact = {
             'messageId': results['id'],
-            'date': Date,
+            'date': results['internalDate'],
             'subject': Subject,
             'snippet': results['snippet'],
             'unread': Unread,
